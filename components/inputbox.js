@@ -1,11 +1,12 @@
 import React from "react";
-import Input, { input_counter } from "./input";
+import Input from "./input";
 import PropTypes from "prop-types";
 import "./inputbox.scss";
 
+var inputbox_counter;
 function InputBox(props) {
   var { id, label, loading, ref, ...iprops } = props;
-  id = id || `sitcontrol${++input_counter}`;
+  id = id || `sitcontrol${++inputbox_counter}`;
   return (
     <div className="sitcontrolbox">
       <label htmlFor={id || this.id}>

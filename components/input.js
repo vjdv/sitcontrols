@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import "./input.scss";
 
 var input_counter = 0;
-class Input extends React.Component {
+export default class Input extends React.Component {
   constructor(props) {
     super(props);
     this.state = { value: props.defaultValue };
@@ -50,6 +50,3 @@ Input.propTypes = {
   format: PropTypes.string,
   onChange: PropTypes.func
 };
-
-export { input_counter };
-export default Input;
