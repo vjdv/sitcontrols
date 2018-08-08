@@ -86,7 +86,6 @@ export default class DatePicker extends React.Component {
     }
     setTimeout(() => {
       const s = this.input.selectionStart;
-      console.log(s);
       if (s >= 0 && s <= 4) this.selectionMode = 1;
       else if (s >= 5 && s <= 7) this.selectionMode = 2;
       else if (s >= 8 && s <= 10) this.selectionMode = 3;
@@ -134,7 +133,6 @@ export default class DatePicker extends React.Component {
   changeHandler = e => this.setState({ value: this.value });
   keyHandler = e => {
     const key = e.keyCode;
-    console.log(key);
     if (key === 37 && this.selectionMode > 1) this.selectionMode--;
     else if (key === 39 && this.selectionMode < 3) this.selectionMode++;
     else if (key === 38 && this.selectionMode === 1) this.year++;
