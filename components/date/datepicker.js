@@ -42,9 +42,8 @@ export default class DatePicker extends React.Component {
       <div className="datepicker" style={style}>
         <span className="icon-left-dir" onClick={e => this.plusDay(-1)} />
         <span className="icon-calendar" onClick={this.show} />
-        <span onClick={this.show}>{this.value}</span>
+        <input className="sitcontrol" ref={this.setInput} name={this.props.name} value={this.value} onChange={this.changeHandler} onKeyDown={this.keyHandler} onFocus={this.show} onBlur={this.hide} />
         <span className="icon-right-dir" onClick={e => this.plusDay(1)} />
-        <input type="hidden" name={this.props.name} value={this.value} />
         {this.state.show &&
           this.state.index === 0 && (
             <div className="picker byday">
@@ -80,6 +79,20 @@ export default class DatePicker extends React.Component {
       </div>
     );
   }
+  componentDidUpdate() {
+    if (this.input !== document.activeElement) {
+      this.selectionMode = 0;
+      return;
+    }
+    setTimeout(() => {
+      const s = this.input.selectionStart;
+      console.log(s);
+      if (s >= 0 && s <= 4) this.selectionMode = 1;
+      else if (s >= 5 && s <= 7) this.selectionMode = 2;
+      else if (s >= 8 && s <= 10) this.selectionMode = 3;
+      this.selectText();
+    }, 100);
+  }
   set day(day) {
     this.setState({ day });
   }
@@ -99,13 +112,14 @@ export default class DatePicker extends React.Component {
     return (this.state.month < 10 ? "0" : "") + this.state.month;
   }
   set month(month) {
-    this.setState({ month });
+    if (month < 1 || month > 12) return;
+    this.setState({ month, show: false });
   }
   get year() {
     return this.state.year;
   }
   set year(year) {
-    this.setState({ year });
+    this.setState({ year, show: false });
   }
   get value() {
     return this.year + "-" + this.monthStr + "-" + this.dayStr;
@@ -116,6 +130,33 @@ export default class DatePicker extends React.Component {
     var d = date.substring(8, 10);
     this.setState({ year: Number(y), month: Number(m), day: Number(d) });
   }
+  setInput = o => (this.input = o);
+  changeHandler = e => this.setState({ value: this.value });
+  keyHandler = e => {
+    const key = e.keyCode;
+    console.log(key);
+    if (key === 37 && this.selectionMode > 1) this.selectionMode--;
+    else if (key === 39 && this.selectionMode < 3) this.selectionMode++;
+    else if (key === 38 && this.selectionMode === 1) this.year++;
+    else if (key === 38 && this.selectionMode === 2) this.month++;
+    else if (key === 38 && this.selectionMode === 3) this.plusDay(1);
+    else if (key === 40 && this.selectionMode === 1) this.year--;
+    else if (key === 40 && this.selectionMode === 2) this.month--;
+    else if (key === 40 && this.selectionMode === 3) this.plusDay(-1);
+    setTimeout(this.selectText, 100);
+  };
+  selectText = () => {
+    if (this.selectionMode === 1) {
+      this.input.selectionStart = 0;
+      this.input.selectionEnd = 4;
+    } else if (this.selectionMode === 2) {
+      this.input.selectionStart = 5;
+      this.input.selectionEnd = 7;
+    } else if (this.selectionMode === 3) {
+      this.input.selectionStart = 8;
+      this.input.selectionEnd = 10;
+    }
+  };
   calculateDayOfWeek(y, m, d) {
     const t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
     y -= m < 3;
@@ -123,6 +164,9 @@ export default class DatePicker extends React.Component {
   }
   show = e => {
     this.setState({ show: !this.state.show, selectionYear: this.state.year, selectionMonth: this.state.month, index: 0 });
+  };
+  hide = e => {
+    setTimeout(() => this.setState({ show: false, index: 0 }), 250);
   };
   showMonths = e => {
     this.setState({ index: 1 });
