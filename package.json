@@ -1,6 +1,6 @@
 {
   "name": "sitcontrols",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Provides form controls with a friendly interface",
   "main": "index.js",
   "scripts": {
