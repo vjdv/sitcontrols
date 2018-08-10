@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import style from "./input.scss";
+import s from "./input.scss";
 
 var input_counter = 0;
 export default class Input extends React.Component {
@@ -30,7 +30,7 @@ export default class Input extends React.Component {
   render() {
     var { id, value, defaultValue, onChange, accept, ...inputprops } = this.props;
     id = id || `sitinp${++input_counter}`;
-    return <input className="sitcontrol" id={id} value={this.state.value} onChange={this.changeHandler} {...inputprops} />;
+    return <input className={s.sitcontrol} id={id} value={this.state.value} onChange={this.changeHandler} {...inputprops} />;
   }
   static getDerivedStateFromProps(props, state) {
     const newstate = {};

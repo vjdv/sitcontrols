@@ -1,14 +1,14 @@
 import React from "react";
 import Input from "./input";
 import PropTypes from "prop-types";
-import "./inputbox.scss";
+import s from "./inputbox.scss";
 
 var inputbox_counter;
 function InputBox(props) {
   var { id, label, loading, ref, ...iprops } = props;
   id = id || `sitcontrol${++inputbox_counter}`;
   return (
-    <div className="sitcontrolbox">
+    <div className={s.sitcontrolbox}>
       <label htmlFor={id || this.id}>
         {label}
         {loading && <span className="icon-spin5 animate-spin" />}

@@ -1,5 +1,8 @@
 import React from "react";
-import "./datepicker.scss";
+import cx from "classnames";
+import s from "./datepicker.scss";
+import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default class DatePicker extends React.Component {
   constructor(props) {
@@ -32,25 +35,24 @@ export default class DatePicker extends React.Component {
       this.state.month = Number(props.defaultValue.substring(5, 7));
       this.state.day = Number(props.defaultValue.substring(8, 10));
     }
-    this.onChange = () => {};
     if (props.onChange) this.onChange = props.onChange;
   }
   render() {
     var style = { width: this.props.width };
     Object.assign(style, this.props.style);
     return (
-      <div className="datepicker" style={style}>
-        <span className="icon-left-dir" onClick={e => this.plusDay(-1)} />
-        <span className="icon-calendar" onClick={this.show} />
-        <input className="sitcontrol" ref={this.setInput} name={this.props.name} value={this.value} onChange={this.changeHandler} onKeyDown={this.keyHandler} onFocus={this.show} onBlur={this.hide} />
-        <span className="icon-right-dir" onClick={e => this.plusDay(1)} />
+      <div className={s.datepicker} style={style}>
+        <FontAwesomeIcon className={cx(s.caret, s.left)} icon="caret-left" onClick={e => this.plusDay(-1)} />
+        <FontAwesomeIcon className={s.calendar} icon="calendar-alt" onClick={this.show} />
+        <input className={s.sitcontrol} ref={this.setInput} name={this.props.name} value={this.value} onChange={this.changeHandler} onKeyDown={this.keyHandler} onClick={this.changeHandler} />
+        <FontAwesomeIcon className={cx(s.caret, s.right)} icon="caret-right" onClick={e => this.plusDay(1)} />
         {this.state.show &&
           this.state.index === 0 && (
-            <div className="picker byday">
+            <div className={cx(s.picker, s.byday)}>
               <div>
-                <i className="icon-left-open left" onClick={e => this.plusMonth(-1)} />
+                <FontAwesomeIcon className={cx(s.angle, s.left)} icon="angle-left" onClick={e => this.plusMonth(-1)} />
                 <span onClick={this.showMonths}>{this.months[this.state.selectionMonth - 1] + " " + this.state.selectionYear}</span>
-                <i className="icon-right-open right" onClick={e => this.plusMonth(1)} />
+                <FontAwesomeIcon className={cx(s.angle, s.right)} icon="angle-right" onClick={e => this.plusMonth(1)} />
               </div>
               <ul onClick={this.selectValue}>
                 {this.renderDaysList()}
@@ -60,15 +62,15 @@ export default class DatePicker extends React.Component {
           )}
         {this.state.show &&
           this.state.index === 1 && (
-            <div className="picker bymonth">
+            <div className={cx(s.picker, s.bymonth)}>
               <div>
-                <i className="icon-left-open left" onClick={e => this.plusYear(-1)} />
+                <FontAwesomeIcon className={cx(s.angle, s.left)} icon="angle-left" onClick={e => this.plusYear(-1)} />
                 {this.state.selectionYear}
-                <i className="icon-right-open right" onClick={e => this.plusYear(1)} />
+                <FontAwesomeIcon className={cx(s.angle, s.right)} icon="angle-right" onClick={e => this.plusYear(1)} />
               </div>
               <ul onClick={this.selectValue}>
                 {this.months.map((y, i) => (
-                  <li className={this.state.month === i + 1 && this.state.selectionYear === this.state.year ? "selected" : undefined} data-value={i + 1} key={i}>
+                  <li className={this.state.month === i + 1 && this.state.selectionYear === this.state.year ? s.selected : undefined} data-value={i + 1} key={i}>
                     {y.substring(0, 3)}
                   </li>
                 ))}
@@ -80,6 +82,10 @@ export default class DatePicker extends React.Component {
     );
   }
   componentDidUpdate() {
+    if (this.oldValue !== this.value) {
+      this.onChange({ target: this, oldValue: this.oldValue, newValue: this.value });
+      this.oldValue = this.value;
+    }
     if (this.input !== document.activeElement) {
       this.selectionMode = 0;
       return;
@@ -93,6 +99,7 @@ export default class DatePicker extends React.Component {
     }, 100);
   }
   set day(day) {
+    if (day < 1 || day > this.days[this.state.month]) return;
     this.setState({ day });
   }
   get day() {
@@ -133,14 +140,24 @@ export default class DatePicker extends React.Component {
   changeHandler = e => this.setState({ value: this.value });
   keyHandler = e => {
     const key = e.keyCode;
+    e.preventDefault();
     if (key === 37 && this.selectionMode > 1) this.selectionMode--;
     else if (key === 39 && this.selectionMode < 3) this.selectionMode++;
     else if (key === 38 && this.selectionMode === 1) this.year++;
     else if (key === 38 && this.selectionMode === 2) this.month++;
-    else if (key === 38 && this.selectionMode === 3) this.plusDay(1);
+    else if (key === 38 && this.selectionMode === 3) this.day++;
     else if (key === 40 && this.selectionMode === 1) this.year--;
     else if (key === 40 && this.selectionMode === 2) this.month--;
-    else if (key === 40 && this.selectionMode === 3) this.plusDay(-1);
+    else if (key === 40 && this.selectionMode === 3) this.day--;
+    else if (key >= 96 && key <= 105) {
+      if (key >= 96 && key <= 98 && this.month === 1 && this.selectionMode === 2) this.month = key - 86;
+      else if (key >= 96 && key <= 97 && this.selectionMode === 2) this.month = 1;
+      else if (key > 97 && this.selectionMode === 2) this.month = key - 96;
+      else if (key >= 96 && this.day === 1 && this.selectionMode === 3) this.day = key - 86;
+      else if (key >= 96 && this.day === 2 && this.selectionMode === 3) this.day = key - 76;
+      else if (key >= 96 && this.day === 3 && this.selectionMode === 3) this.day = Math.min(key - 66, this.days[this.month]);
+      else if (key >= 97 && this.selectionMode === 3) this.day = key - 96;
+    }
     setTimeout(this.selectText, 100);
   };
   selectText = () => {
@@ -162,9 +179,6 @@ export default class DatePicker extends React.Component {
   }
   show = e => {
     this.setState({ show: !this.state.show, selectionYear: this.state.year, selectionMonth: this.state.month, index: 0 });
-  };
-  hide = e => {
-    setTimeout(() => this.setState({ show: false, index: 0 }), 250);
   };
   showMonths = e => {
     this.setState({ index: 1 });
@@ -205,14 +219,14 @@ export default class DatePicker extends React.Component {
         year++;
       }
     }
-    this.setState({ year, month, day, selectionYear: year, selectionMonth: month }, () => this.onChange({ target: this, value: this.value }));
+    this.setState({ year, month, day, selectionYear: year, selectionMonth: month });
   }
   renderDaysList = () => {
     const firstday = this.calculateDayOfWeek(this.state.selectionYear, this.state.selectionMonth, 1);
     var list = [];
     for (let i = 0; i < this.daysofweek.length; i++) {
       list.push(
-        <li className="header" key={i}>
+        <li className={s.header} key={i}>
           {this.daysofweek[i]}
         </li>
       );
@@ -223,9 +237,8 @@ export default class DatePicker extends React.Component {
     for (let i = 1; i <= this.days[this.state.selectionMonth]; i++) {
       let selected = this.state.year === this.state.selectionYear && this.state.month === this.state.selectionMonth && this.state.day === i;
       let today = this.state.selectionYear === this.today.getFullYear() && this.state.selectionMonth === this.today.getMonth() + 1 && this.today.getDate() === i;
-      let classes = [selected ? "selected" : "", today ? "today" : ""];
       list.push(
-        <li className={classes.join(" ")} key={14 + i} data-value={i}>
+        <li className={cx(selected && s.selected, today && s.today)} key={14 + i} data-value={i}>
           {i}
         </li>
       );
@@ -237,9 +250,7 @@ export default class DatePicker extends React.Component {
     const value = e.target.dataset.value;
     if (value === undefined) return;
     if (this.state.index === 0) {
-      this.setState({ show: false, year: this.state.selectionYear, month: this.state.selectionMonth, day: Number(value) }, () => {
-        if (this.onChange) this.onChange({ target: this, value: this.value });
-      });
+      this.setState({ show: false, year: this.state.selectionYear, month: this.state.selectionMonth, day: Number(value) });
     } else if (this.state.index === 1) {
       this.setState({ index: 0, selectionMonth: Number(value) });
     }
@@ -247,5 +258,11 @@ export default class DatePicker extends React.Component {
 }
 
 DatePicker.defaultProps = {
-  style: {}
+  style: {},
+  onChange: () => {}
+};
+
+DatePicker.propType = {
+  value: PropTypes.string,
+  onChange: PropTypes.func
 };
