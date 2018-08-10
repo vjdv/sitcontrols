@@ -1,7 +1,7 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('react')) :
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('react')) :
 	typeof define === 'function' && define.amd ? define(['react'], factory) :
-	(factory(global.React));
+	(global.SitControls = factory(global.React));
 }(this, (function (React) { 'use strict';
 
 React = React && React.hasOwnProperty('default') ? React['default'] : React;
@@ -2327,12 +2327,8 @@ class DatePicker extends React.Component {
     this.keyHandler = e => {
       const key = e.keyCode;
       e.preventDefault();
-      console.log("key: %i", key);
-      console.log("mode: %i", this.selectionMode);
       if (key === 37 && this.selectionMode > 1) this.selectionMode--;else if (key === 39 && this.selectionMode < 3) this.selectionMode++;else if (key === 38 && this.selectionMode === 1) this.year++;else if (key === 38 && this.selectionMode === 2) this.month++;else if (key === 38 && this.selectionMode === 3) this.day++;else if (key === 40 && this.selectionMode === 1) this.year--;else if (key === 40 && this.selectionMode === 2) this.month--;else if (key === 40 && this.selectionMode === 3) this.day--;else if (key >= 96 && key <= 105) {
-        if (key >= 96 && key <= 98 && this.month === 1 && this.selectionMode === 2) this.month = key - 86;else if (key >= 96 && key <= 97 && this.selectionMode === 2) this.month = 1;else if (key > 97 && this.selectionMode === 2) this.month = key - 96;else if (key >= 96 && this.day === 1 && this.selectionMode === 3) this.day = key - 86;else if (key >= 96 && this.day === 2 && this.selectionMode === 3) this.day = key - 76;else if (key >= 96 && this.day === 3 && this.selectionMode === 3) this.day = Math.min(key - 66, this.days[this.month]);
-        //else if (key >= 96 && key <= 97 && this.selectionMode === 3) this.day = 1;
-        else if (key >= 97 && this.selectionMode === 3) this.day = key - 96;
+        if (key >= 96 && key <= 98 && this.month === 1 && this.selectionMode === 2) this.month = key - 86;else if (key >= 96 && key <= 97 && this.selectionMode === 2) this.month = 1;else if (key > 97 && this.selectionMode === 2) this.month = key - 96;else if (key >= 96 && this.day === 1 && this.selectionMode === 3) this.day = key - 86;else if (key >= 96 && this.day === 2 && this.selectionMode === 3) this.day = key - 76;else if (key >= 96 && this.day === 3 && this.selectionMode === 3) this.day = Math.min(key - 66, this.days[this.month]);else if (key >= 97 && this.selectionMode === 3) this.day = key - 96;
       }
       setTimeout(this.selectText, 100);
     };
@@ -2489,7 +2485,6 @@ class DatePicker extends React.Component {
     }
     setTimeout(() => {
       const s = this.input.selectionStart;
-      console.log(s);
       if (s >= 0 && s <= 4) this.selectionMode = 1;else if (s >= 5 && s <= 7) this.selectionMode = 2;else if (s >= 8 && s <= 10) this.selectionMode = 3;
       this.selectText();
     }, 100);
@@ -2607,7 +2602,7 @@ var SitControls = {
   DatePicker: DatePicker
 };
 
-module.exports = SitControls;
+return SitControls;
 
 })));
 //# sourceMappingURL=index.js.map
