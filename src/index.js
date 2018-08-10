@@ -12,4 +12,4 @@ var SitControls = {
   DatePicker: DatePicker
 };
 
-module.exports = SitControls;
+export default SitControls;
