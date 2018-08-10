@@ -12,4 +12,6 @@ var SitControls = {
   DatePicker: DatePicker
 };
 
+export { Input, InputBox, DatePicker };
+
 export default SitControls;
