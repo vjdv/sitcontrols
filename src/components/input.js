@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./input.scss";
+import style from "./input.scss";
 
 var input_counter = 0;
 export default class Input extends React.Component {
