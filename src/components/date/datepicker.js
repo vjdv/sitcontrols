@@ -262,7 +262,7 @@ DatePicker.defaultProps = {
   onChange: () => {}
 };
 
-DatePicker.propType = {
+DatePicker.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func
 };
