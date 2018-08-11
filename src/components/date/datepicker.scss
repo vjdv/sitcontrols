@@ -48,6 +48,7 @@ $hover: rgba(255, 227, 160, 0.59);
     box-shadow: 0 1px 5px #ddd;
     border-radius: 7px;
     padding: 10px;
+    box-sizing: border-box;
     > div {
       font-size: 1rem;
       position: relative;
@@ -56,9 +57,8 @@ $hover: rgba(255, 227, 160, 0.59);
       .angle {
         font-style: normal;
         text-align: center;
-        width: 1.8rem;
-        height: 1.8rem;
-        line-height: 1.8rem;
+        width: 1.4rem;
+        height: 1.4rem;
         position: absolute;
         top: 0;
         cursor: pointer;
@@ -78,15 +78,18 @@ $hover: rgba(255, 227, 160, 0.59);
       width: 182px;
       font-size: 0;
       padding: 5px 0 0 0;
+      box-sizing: border-box;
       li {
         font-size: 0.9rem;
+        line-height: 0.9rem;
         display: block;
         border-radius: 7px;
         width: 26px;
-        height: 26px;
-        padding: 2px 4px;
+        height: 1.15rem;
+        padding: 0.125rem 0.25rem;
         float: left;
         text-align: center;
+        box-sizing: border-box;
         transition: background-color ease-in-out 300ms;
         &:hover {
           background-color: $hover;
@@ -113,6 +116,7 @@ $hover: rgba(255, 227, 160, 0.59);
       width: 180px;
       font-size: 0;
       padding: 5px 0 0 0;
+      box-sizing: border-box;
       li {
         font-size: 1rem;
         display: block;
@@ -122,6 +126,7 @@ $hover: rgba(255, 227, 160, 0.59);
         padding: 5px;
         float: left;
         text-align: center;
+        box-sizing: border-box;
         transition: background-color ease-in-out 300ms;
         &:hover {
           background-color: $hover;
