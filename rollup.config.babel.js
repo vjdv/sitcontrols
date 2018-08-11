@@ -5,43 +5,29 @@ import commonjs from "rollup-plugin-commonjs";
 import replace from "rollup-plugin-replace";
 import postcss from "rollup-plugin-postcss";
 
+const globals = {
+  react: "React",
+  "react-dom": "ReactDOM",
+  "prop-types": "PropTypes"
+};
+
 export default {
   input: "./src/index.js",
-
   output: [
     {
       file: "./build/index.js",
       format: "umd",
       name: "SitControls",
       sourcemap: true,
-      globals: {
-        react: "React",
-        "react-dom": "ReactDOM"
-      }
+      globals
     },
     {
       file: "./build/index.module.js",
       format: "es",
-      name: "SitControls",
       sourcemap: true,
-      globals: {
-        react: "React",
-        "react-dom": "ReactDOM"
-      }
+      globals
     }
   ],
-
-  /*targets: [
-    {
-      dest: "./build/index.js",
-      format: "umd"
-    },
-    {
-      dest: "build/index.module.js",
-      format: "es"
-    }
-  ],*/
-
   plugins: [
     postcss({
       modules: true
@@ -55,6 +41,5 @@ export default {
     resolve(),
     commonjs()
   ],
-
-  external: ["react", "react-dom"]
+  external: ["react", "react-dom", "prop-types", "react-fontawesome"]
 };

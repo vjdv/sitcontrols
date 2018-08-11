@@ -1,760 +1,5 @@
 import React from 'react';
-
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-/*
-object-assign
-(c) Sindre Sorhus
-@license MIT
-*/
-/* eslint-disable no-unused-vars */
-var getOwnPropertySymbols = Object.getOwnPropertySymbols;
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-var propIsEnumerable = Object.prototype.propertyIsEnumerable;
-
-function toObject(val) {
-	if (val === null || val === undefined) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
-
-	return Object(val);
-}
-
-function shouldUseNative() {
-	try {
-		if (!Object.assign) {
-			return false;
-		}
-
-		// Detect buggy property enumeration order in older V8 versions.
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
-		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
-		test1[5] = 'de';
-		if (Object.getOwnPropertyNames(test1)[0] === '5') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test2 = {};
-		for (var i = 0; i < 10; i++) {
-			test2['_' + String.fromCharCode(i)] = i;
-		}
-		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
-			return test2[n];
-		});
-		if (order2.join('') !== '0123456789') {
-			return false;
-		}
-
-		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
-		var test3 = {};
-		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
-			test3[letter] = letter;
-		});
-		if (Object.keys(Object.assign({}, test3)).join('') !==
-				'abcdefghijklmnopqrst') {
-			return false;
-		}
-
-		return true;
-	} catch (err) {
-		// We don't expect any of the above to throw, but better to be safe.
-		return false;
-	}
-}
-
-var objectAssign = shouldUseNative() ? Object.assign : function (target, source) {
-	var from;
-	var to = toObject(target);
-	var symbols;
-
-	for (var s = 1; s < arguments.length; s++) {
-		from = Object(arguments[s]);
-
-		for (var key in from) {
-			if (hasOwnProperty.call(from, key)) {
-				to[key] = from[key];
-			}
-		}
-
-		if (getOwnPropertySymbols) {
-			symbols = getOwnPropertySymbols(from);
-			for (var i = 0; i < symbols.length; i++) {
-				if (propIsEnumerable.call(from, symbols[i])) {
-					to[symbols[i]] = from[symbols[i]];
-				}
-			}
-		}
-	}
-
-	return to;
-};
-
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
-
-var ReactPropTypesSecret_1 = ReactPropTypesSecret;
-
-var printWarning = function() {};
-
-{
-  var ReactPropTypesSecret$1 = ReactPropTypesSecret_1;
-  var loggedTypeFailures = {};
-
-  printWarning = function(text) {
-    var message = 'Warning: ' + text;
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-}
-
-/**
- * Assert that the values match with the type specs.
- * Error messages are memorized and will only be shown once.
- *
- * @param {object} typeSpecs Map of name to a ReactPropType
- * @param {object} values Runtime values that need to be type-checked
- * @param {string} location e.g. "prop", "context", "child context"
- * @param {string} componentName Name of the component for error messages.
- * @param {?Function} getStack Returns the component stack.
- * @private
- */
-function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
-  {
-    for (var typeSpecName in typeSpecs) {
-      if (typeSpecs.hasOwnProperty(typeSpecName)) {
-        var error;
-        // Prop type validation may throw. In case they do, we don't want to
-        // fail the render phase where it didn't fail before. So we log it.
-        // After these have been cleaned up, we'll let them throw.
-        try {
-          // This is intentionally an invariant that gets caught. It's the same
-          // behavior as without this statement except with a better message.
-          if (typeof typeSpecs[typeSpecName] !== 'function') {
-            var err = Error(
-              (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
-              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.'
-            );
-            err.name = 'Invariant Violation';
-            throw err;
-          }
-          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret$1);
-        } catch (ex) {
-          error = ex;
-        }
-        if (error && !(error instanceof Error)) {
-          printWarning(
-            (componentName || 'React class') + ': type specification of ' +
-            location + ' `' + typeSpecName + '` is invalid; the type checker ' +
-            'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
-            'You may have forgotten to pass an argument to the type checker ' +
-            'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
-            'shape all require an argument).'
-          );
-
-        }
-        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
-          // Only monitor this failure once because there tends to be a lot of the
-          // same error.
-          loggedTypeFailures[error.message] = true;
-
-          var stack = getStack ? getStack() : '';
-
-          printWarning(
-            'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
-          );
-        }
-      }
-    }
-  }
-}
-
-var checkPropTypes_1 = checkPropTypes;
-
-var printWarning$1 = function() {};
-
-{
-  printWarning$1 = function(text) {
-    var message = 'Warning: ' + text;
-    if (typeof console !== 'undefined') {
-      console.error(message);
-    }
-    try {
-      // --- Welcome to debugging React ---
-      // This error was thrown as a convenience so that you can use this stack
-      // to find the callsite that caused this warning to fire.
-      throw new Error(message);
-    } catch (x) {}
-  };
-}
-
-function emptyFunctionThatReturnsNull() {
-  return null;
-}
-
-var factoryWithTypeCheckers = function(isValidElement, throwOnDirectAccess) {
-  /* global Symbol */
-  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
-  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
-
-  /**
-   * Returns the iterator method function contained on the iterable object.
-   *
-   * Be sure to invoke the function with the iterable as context:
-   *
-   *     var iteratorFn = getIteratorFn(myIterable);
-   *     if (iteratorFn) {
-   *       var iterator = iteratorFn.call(myIterable);
-   *       ...
-   *     }
-   *
-   * @param {?object} maybeIterable
-   * @return {?function}
-   */
-  function getIteratorFn(maybeIterable) {
-    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
-    if (typeof iteratorFn === 'function') {
-      return iteratorFn;
-    }
-  }
-
-  /**
-   * Collection of methods that allow declaration and validation of props that are
-   * supplied to React components. Example usage:
-   *
-   *   var Props = require('ReactPropTypes');
-   *   var MyArticle = React.createClass({
-   *     propTypes: {
-   *       // An optional string prop named "description".
-   *       description: Props.string,
-   *
-   *       // A required enum prop named "category".
-   *       category: Props.oneOf(['News','Photos']).isRequired,
-   *
-   *       // A prop named "dialog" that requires an instance of Dialog.
-   *       dialog: Props.instanceOf(Dialog).isRequired
-   *     },
-   *     render: function() { ... }
-   *   });
-   *
-   * A more formal specification of how these methods are used:
-   *
-   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
-   *   decl := ReactPropTypes.{type}(.isRequired)?
-   *
-   * Each and every declaration produces a function with the same signature. This
-   * allows the creation of custom validation functions. For example:
-   *
-   *  var MyLink = React.createClass({
-   *    propTypes: {
-   *      // An optional string or URI prop named "href".
-   *      href: function(props, propName, componentName) {
-   *        var propValue = props[propName];
-   *        if (propValue != null && typeof propValue !== 'string' &&
-   *            !(propValue instanceof URI)) {
-   *          return new Error(
-   *            'Expected a string or an URI for ' + propName + ' in ' +
-   *            componentName
-   *          );
-   *        }
-   *      }
-   *    },
-   *    render: function() {...}
-   *  });
-   *
-   * @internal
-   */
-
-  var ANONYMOUS = '<<anonymous>>';
-
-  // Important!
-  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
-  var ReactPropTypes = {
-    array: createPrimitiveTypeChecker('array'),
-    bool: createPrimitiveTypeChecker('boolean'),
-    func: createPrimitiveTypeChecker('function'),
-    number: createPrimitiveTypeChecker('number'),
-    object: createPrimitiveTypeChecker('object'),
-    string: createPrimitiveTypeChecker('string'),
-    symbol: createPrimitiveTypeChecker('symbol'),
-
-    any: createAnyTypeChecker(),
-    arrayOf: createArrayOfTypeChecker,
-    element: createElementTypeChecker(),
-    instanceOf: createInstanceTypeChecker,
-    node: createNodeChecker(),
-    objectOf: createObjectOfTypeChecker,
-    oneOf: createEnumTypeChecker,
-    oneOfType: createUnionTypeChecker,
-    shape: createShapeTypeChecker,
-    exact: createStrictShapeTypeChecker,
-  };
-
-  /**
-   * inlined Object.is polyfill to avoid requiring consumers ship their own
-   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
-   */
-  /*eslint-disable no-self-compare*/
-  function is(x, y) {
-    // SameValue algorithm
-    if (x === y) {
-      // Steps 1-5, 7-10
-      // Steps 6.b-6.e: +0 != -0
-      return x !== 0 || 1 / x === 1 / y;
-    } else {
-      // Step 6.a: NaN == NaN
-      return x !== x && y !== y;
-    }
-  }
-  /*eslint-enable no-self-compare*/
-
-  /**
-   * We use an Error-like object for backward compatibility as people may call
-   * PropTypes directly and inspect their output. However, we don't use real
-   * Errors anymore. We don't inspect their stack anyway, and creating them
-   * is prohibitively expensive if they are created too often, such as what
-   * happens in oneOfType() for any type before the one that matched.
-   */
-  function PropTypeError(message) {
-    this.message = message;
-    this.stack = '';
-  }
-  // Make `instanceof Error` still work for returned errors.
-  PropTypeError.prototype = Error.prototype;
-
-  function createChainableTypeChecker(validate) {
-    {
-      var manualPropTypeCallCache = {};
-      var manualPropTypeWarningCount = 0;
-    }
-    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
-      componentName = componentName || ANONYMOUS;
-      propFullName = propFullName || propName;
-
-      if (secret !== ReactPropTypesSecret_1) {
-        if (throwOnDirectAccess) {
-          // New behavior only for users of `prop-types` package
-          var err = new Error(
-            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
-            'Use `PropTypes.checkPropTypes()` to call them. ' +
-            'Read more at http://fb.me/use-check-prop-types'
-          );
-          err.name = 'Invariant Violation';
-          throw err;
-        } else if ("development" !== 'production' && typeof console !== 'undefined') {
-          // Old behavior for people using React.PropTypes
-          var cacheKey = componentName + ':' + propName;
-          if (
-            !manualPropTypeCallCache[cacheKey] &&
-            // Avoid spamming the console because they are often not actionable except for lib authors
-            manualPropTypeWarningCount < 3
-          ) {
-            printWarning$1(
-              'You are manually calling a React.PropTypes validation ' +
-              'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
-              'and will throw in the standalone `prop-types` package. ' +
-              'You may be seeing this warning due to a third-party PropTypes ' +
-              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
-            );
-            manualPropTypeCallCache[cacheKey] = true;
-            manualPropTypeWarningCount++;
-          }
-        }
-      }
-      if (props[propName] == null) {
-        if (isRequired) {
-          if (props[propName] === null) {
-            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
-          }
-          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
-        }
-        return null;
-      } else {
-        return validate(props, propName, componentName, location, propFullName);
-      }
-    }
-
-    var chainedCheckType = checkType.bind(null, false);
-    chainedCheckType.isRequired = checkType.bind(null, true);
-
-    return chainedCheckType;
-  }
-
-  function createPrimitiveTypeChecker(expectedType) {
-    function validate(props, propName, componentName, location, propFullName, secret) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== expectedType) {
-        // `propValue` being instance of, say, date/regexp, pass the 'object'
-        // check, but we can offer a more precise error message here rather than
-        // 'of type `object`'.
-        var preciseType = getPreciseType(propValue);
-
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createAnyTypeChecker() {
-    return createChainableTypeChecker(emptyFunctionThatReturnsNull);
-  }
-
-  function createArrayOfTypeChecker(typeChecker) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (typeof typeChecker !== 'function') {
-        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
-      }
-      var propValue = props[propName];
-      if (!Array.isArray(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
-      }
-      for (var i = 0; i < propValue.length; i++) {
-        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret_1);
-        if (error instanceof Error) {
-          return error;
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createElementTypeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      if (!isValidElement(propValue)) {
-        var propType = getPropType(propValue);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createInstanceTypeChecker(expectedClass) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (!(props[propName] instanceof expectedClass)) {
-        var expectedClassName = expectedClass.name || ANONYMOUS;
-        var actualClassName = getClassName(props[propName]);
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createEnumTypeChecker(expectedValues) {
-    if (!Array.isArray(expectedValues)) {
-      printWarning$1('Invalid argument supplied to oneOf, expected an instance of array.');
-      return emptyFunctionThatReturnsNull;
-    }
-
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      for (var i = 0; i < expectedValues.length; i++) {
-        if (is(propValue, expectedValues[i])) {
-          return null;
-        }
-      }
-
-      var valuesString = JSON.stringify(expectedValues);
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + propValue + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createObjectOfTypeChecker(typeChecker) {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (typeof typeChecker !== 'function') {
-        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
-      }
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
-      }
-      for (var key in propValue) {
-        if (propValue.hasOwnProperty(key)) {
-          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
-          if (error instanceof Error) {
-            return error;
-          }
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createUnionTypeChecker(arrayOfTypeCheckers) {
-    if (!Array.isArray(arrayOfTypeCheckers)) {
-      printWarning$1('Invalid argument supplied to oneOfType, expected an instance of array.');
-      return emptyFunctionThatReturnsNull;
-    }
-
-    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
-      var checker = arrayOfTypeCheckers[i];
-      if (typeof checker !== 'function') {
-        printWarning$1(
-          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
-          'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
-        );
-        return emptyFunctionThatReturnsNull;
-      }
-    }
-
-    function validate(props, propName, componentName, location, propFullName) {
-      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
-        var checker = arrayOfTypeCheckers[i];
-        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret_1) == null) {
-          return null;
-        }
-      }
-
-      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createNodeChecker() {
-    function validate(props, propName, componentName, location, propFullName) {
-      if (!isNode(props[propName])) {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createShapeTypeChecker(shapeTypes) {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
-      }
-      for (var key in shapeTypes) {
-        var checker = shapeTypes[key];
-        if (!checker) {
-          continue;
-        }
-        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
-        if (error) {
-          return error;
-        }
-      }
-      return null;
-    }
-    return createChainableTypeChecker(validate);
-  }
-
-  function createStrictShapeTypeChecker(shapeTypes) {
-    function validate(props, propName, componentName, location, propFullName) {
-      var propValue = props[propName];
-      var propType = getPropType(propValue);
-      if (propType !== 'object') {
-        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
-      }
-      // We need to check all keys in case some are required but missing from
-      // props.
-      var allKeys = objectAssign({}, props[propName], shapeTypes);
-      for (var key in allKeys) {
-        var checker = shapeTypes[key];
-        if (!checker) {
-          return new PropTypeError(
-            'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
-            '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
-            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
-          );
-        }
-        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret_1);
-        if (error) {
-          return error;
-        }
-      }
-      return null;
-    }
-
-    return createChainableTypeChecker(validate);
-  }
-
-  function isNode(propValue) {
-    switch (typeof propValue) {
-      case 'number':
-      case 'string':
-      case 'undefined':
-        return true;
-      case 'boolean':
-        return !propValue;
-      case 'object':
-        if (Array.isArray(propValue)) {
-          return propValue.every(isNode);
-        }
-        if (propValue === null || isValidElement(propValue)) {
-          return true;
-        }
-
-        var iteratorFn = getIteratorFn(propValue);
-        if (iteratorFn) {
-          var iterator = iteratorFn.call(propValue);
-          var step;
-          if (iteratorFn !== propValue.entries) {
-            while (!(step = iterator.next()).done) {
-              if (!isNode(step.value)) {
-                return false;
-              }
-            }
-          } else {
-            // Iterator will provide entry [k,v] tuples rather than values.
-            while (!(step = iterator.next()).done) {
-              var entry = step.value;
-              if (entry) {
-                if (!isNode(entry[1])) {
-                  return false;
-                }
-              }
-            }
-          }
-        } else {
-          return false;
-        }
-
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  function isSymbol(propType, propValue) {
-    // Native Symbol.
-    if (propType === 'symbol') {
-      return true;
-    }
-
-    // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
-    if (propValue['@@toStringTag'] === 'Symbol') {
-      return true;
-    }
-
-    // Fallback for non-spec compliant Symbols which are polyfilled.
-    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
-      return true;
-    }
-
-    return false;
-  }
-
-  // Equivalent of `typeof` but with special handling for array and regexp.
-  function getPropType(propValue) {
-    var propType = typeof propValue;
-    if (Array.isArray(propValue)) {
-      return 'array';
-    }
-    if (propValue instanceof RegExp) {
-      // Old webkits (at least until Android 4.0) return 'function' rather than
-      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
-      // passes PropTypes.object.
-      return 'object';
-    }
-    if (isSymbol(propType, propValue)) {
-      return 'symbol';
-    }
-    return propType;
-  }
-
-  // This handles more types than `getPropType`. Only used for error messages.
-  // See `createPrimitiveTypeChecker`.
-  function getPreciseType(propValue) {
-    if (typeof propValue === 'undefined' || propValue === null) {
-      return '' + propValue;
-    }
-    var propType = getPropType(propValue);
-    if (propType === 'object') {
-      if (propValue instanceof Date) {
-        return 'date';
-      } else if (propValue instanceof RegExp) {
-        return 'regexp';
-      }
-    }
-    return propType;
-  }
-
-  // Returns a string that is postfixed to a warning about an invalid type.
-  // For example, "undefined" or "of type array"
-  function getPostfixForTypeWarning(value) {
-    var type = getPreciseType(value);
-    switch (type) {
-      case 'array':
-      case 'object':
-        return 'an ' + type;
-      case 'boolean':
-      case 'date':
-      case 'regexp':
-        return 'a ' + type;
-      default:
-        return type;
-    }
-  }
-
-  // Returns class name of the object, if any.
-  function getClassName(propValue) {
-    if (!propValue.constructor || !propValue.constructor.name) {
-      return ANONYMOUS;
-    }
-    return propValue.constructor.name;
-  }
-
-  ReactPropTypes.checkPropTypes = checkPropTypes_1;
-  ReactPropTypes.PropTypes = ReactPropTypes;
-
-  return ReactPropTypes;
-};
-
-var propTypes = createCommonjsModule(function (module) {
-/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-{
-  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
-    Symbol.for &&
-    Symbol.for('react.element')) ||
-    0xeac7;
-
-  var isValidElement = function(object) {
-    return typeof object === 'object' &&
-      object !== null &&
-      object.$$typeof === REACT_ELEMENT_TYPE;
-  };
-
-  // By explicitly using `prop-types` you are opting into new development behavior.
-  // http://fb.me/prop-types-in-prod
-  var throwOnDirectAccess = true;
-  module.exports = factoryWithTypeCheckers(isValidElement, throwOnDirectAccess);
-}
-});
+import PropTypes from 'prop-types';
 
 function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
@@ -787,76 +32,166 @@ var css = ".input_sitcontrol__3iLVi {\n  display: block;\n  width: 100%;\n  padd
 var s = { "sitcontrol": "input_sitcontrol__3iLVi" };
 styleInject(css);
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
 
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
+
+var inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
+
+var objectWithoutProperties = function (obj, keys) {
+  var target = {};
+
+  for (var i in obj) {
+    if (keys.indexOf(i) >= 0) continue;
+    if (!Object.prototype.hasOwnProperty.call(obj, i)) continue;
+    target[i] = obj[i];
+  }
+
+  return target;
+};
+
+var possibleConstructorReturn = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && (typeof call === "object" || typeof call === "function") ? call : self;
+};
 
 var input_counter = 0;
-class Input extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.changeHandler = e => {
+var Input = function (_React$Component) {
+  inherits(Input, _React$Component);
+
+  function Input(props) {
+    classCallCheck(this, Input);
+
+    var _this = possibleConstructorReturn(this, (Input.__proto__ || Object.getPrototypeOf(Input)).call(this, props));
+
+    _this.changeHandler = function (e) {
       var val = e.target.value;
-      if (this.props.format === "uppercase") val = val.toUpperCase();else if (this.props.format === "lowercase") val = val.toLowerCase();
-      if (this.props.accept !== undefined) {
-        var re = new RegExp("^" + this.props.accept + "$");
-        val = re.test(val) ? val : this.state.value;
+      if (_this.props.format === "uppercase") val = val.toUpperCase();else if (_this.props.format === "lowercase") val = val.toLowerCase();
+      if (_this.props.accept !== undefined) {
+        var re = new RegExp("^" + _this.props.accept + "$");
+        val = re.test(val) ? val : _this.state.value;
       }
-      if (val !== this.state.value) this.onChange(e, val);
-      this.value = val;
+      if (val !== _this.state.value) _this.onChange(e, val);
+      _this.value = val;
     };
 
-    this.state = { value: props.defaultValue };
-    this.id = `sitcontrol${++input_counter}`;
-    this.onChange = props.onChange;
-  }
-  get value() {
-    return this.state.value;
-  }
-  set value(val) {
-    this.setState({ value: val });
+    _this.state = { value: props.defaultValue };
+    _this.id = "sitcontrol" + ++input_counter;
+    _this.onChange = props.onChange;
+    return _this;
   }
 
-  render() {
-    var _props = this.props,
-        { id, value, defaultValue, onChange, accept } = _props,
-        inputprops = _objectWithoutProperties(_props, ["id", "value", "defaultValue", "onChange", "accept"]);
-    id = id || `sitinp${++input_counter}`;
-    return React.createElement("input", _extends({ className: s.sitcontrol, id: id, value: this.state.value, onChange: this.changeHandler }, inputprops));
-  }
-  static getDerivedStateFromProps(props, state) {
-    const newstate = {};
-    if (props.value !== undefined && state.value !== props.value) newstate.value = props.value;
-    return newstate;
-  }
-}
+  createClass(Input, [{
+    key: "render",
+    value: function render() {
+      var _props = this.props,
+          id = _props.id,
+          value = _props.value,
+          defaultValue = _props.defaultValue,
+          onChange = _props.onChange,
+          accept = _props.accept,
+          inputprops = objectWithoutProperties(_props, ["id", "value", "defaultValue", "onChange", "accept"]);
+
+      id = id || "sitinp" + ++input_counter;
+      return React.createElement("input", _extends({ className: s.sitcontrol, id: id, value: this.state.value, onChange: this.changeHandler }, inputprops));
+    }
+  }, {
+    key: "value",
+    get: function get$$1() {
+      return this.state.value;
+    },
+    set: function set$$1(val) {
+      this.setState({ value: val });
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(props, state) {
+      var newstate = {};
+      if (props.value !== undefined && state.value !== props.value) newstate.value = props.value;
+      return newstate;
+    }
+  }]);
+  return Input;
+}(React.Component);
+
 
 Input.defaultProps = {
   defaultValue: "",
-  onChange: () => {}
+  onChange: function onChange() {}
 };
 Input.propTypes = {
-  value: propTypes.string,
-  defaultValue: propTypes.string,
-  accept: propTypes.string,
-  format: propTypes.string,
-  onChange: propTypes.func
+  value: PropTypes.string,
+  defaultValue: PropTypes.string,
+  accept: PropTypes.string,
+  format: PropTypes.string,
+  onChange: PropTypes.func
 };
 
 var css$1 = ".inputbox_sitcontrolbox__35IBH label {\n  display: inline-block;\n  margin: 0.4rem 0 0.2rem 0; }\n";
 var s$1 = { "sitcontrolbox": "inputbox_sitcontrolbox__35IBH" };
 styleInject(css$1);
 
-var _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-function _objectWithoutProperties$1(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
 var inputbox_counter;
 function InputBox(props) {
-  var { id, label, loading, ref } = props,
-      iprops = _objectWithoutProperties$1(props, ["id", "label", "loading", "ref"]);
-  id = id || `sitcontrol${++inputbox_counter}`;
+  var id = props.id,
+      label = props.label,
+      loading = props.loading,
+      ref = props.ref,
+      iprops = objectWithoutProperties(props, ["id", "label", "loading", "ref"]);
+
+  id = id || "sitcontrol" + ++inputbox_counter;
   return React.createElement(
     "div",
     { className: s$1.sitcontrolbox },
@@ -866,15 +201,19 @@ function InputBox(props) {
       label,
       loading && React.createElement("span", { className: "icon-spin5 animate-spin" })
     ),
-    React.createElement(Input, _extends$1({ ref: ref, id: id || this.id }, iprops))
+    React.createElement(Input, _extends({ ref: ref, id: id || this.id }, iprops))
   );
 }
 
 InputBox.propTypes = {
-  label: propTypes.string.isRequired,
-  id: propTypes.string,
-  loading: propTypes.bool
+  label: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  loading: PropTypes.bool
 };
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
 
 var classnames = createCommonjsModule(function (module) {
 /*!
@@ -935,7 +274,7 @@ var s$2 = { "sitcontrol": "datepicker_sitcontrol__MlvQI", "datepicker": "datepic
 styleInject(css$2);
 
 /*!
- * Font Awesome Free 5.1.0-11 by @fontawesome - https://fontawesome.com
+ * Font Awesome Free 5.2.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */
 var noop = function noop() {};
@@ -966,13 +305,13 @@ var DEFAULT_FAMILY_PREFIX = 'fa';
 var DEFAULT_REPLACEMENT_CLASS = 'svg-inline--fa';
 var DATA_FA_I2SVG = 'data-fa-i2svg';
 
-var classCallCheck = function (instance, Constructor) {
+var classCallCheck$1 = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
   }
 };
 
-var createClass = function () {
+var createClass$1 = function () {
   function defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {
       var descriptor = props[i];
@@ -992,7 +331,7 @@ var createClass = function () {
 
 
 
-var _extends$2 = Object.assign || function (target) {
+var _extends$1 = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
 
@@ -1008,7 +347,7 @@ var _extends$2 = Object.assign || function (target) {
 
 
 
-var slicedToArray = function () {
+var slicedToArray$1 = function () {
   function sliceIterator(arr, i) {
     var _arr = [];
     var _n = true;
@@ -1070,7 +409,7 @@ if (DOCUMENT && typeof DOCUMENT.querySelector === 'function') {
   var attrs = [['data-family-prefix', 'familyPrefix'], ['data-replacement-class', 'replacementClass'], ['data-auto-replace-svg', 'autoReplaceSvg'], ['data-auto-add-css', 'autoAddCss'], ['data-auto-a11y', 'autoA11y'], ['data-search-pseudo-elements', 'searchPseudoElements'], ['data-observe-mutations', 'observeMutations'], ['data-keep-original-source', 'keepOriginalSource'], ['data-measure-performance', 'measurePerformance'], ['data-show-missing-icons', 'showMissingIcons']];
 
   attrs.forEach(function (_ref) {
-    var _ref2 = slicedToArray(_ref, 2),
+    var _ref2 = slicedToArray$1(_ref, 2),
         attr = _ref2[0],
         key = _ref2[1];
 
@@ -1082,7 +421,7 @@ if (DOCUMENT && typeof DOCUMENT.querySelector === 'function') {
   });
 }
 
-var _default = _extends$2({
+var _default = _extends$1({
   familyPrefix: DEFAULT_FAMILY_PREFIX,
   replacementClass: DEFAULT_REPLACEMENT_CLASS,
   autoReplaceSvg: true,
@@ -1097,7 +436,7 @@ var _default = _extends$2({
 
 if (!_default.autoReplaceSvg) _default.observeMutations = false;
 
-var config = _extends$2({}, _default);
+var config = _extends$1({}, _default);
 
 WINDOW.FontAwesomeConfig = config;
 
@@ -1238,25 +577,25 @@ var makeIconMasking = function (_ref) {
 
   var maskRect = {
     tag: 'rect',
-    attributes: _extends$2({}, ALL_SPACE, {
+    attributes: _extends$1({}, ALL_SPACE, {
       fill: 'white'
     })
   };
   var maskInnerGroup = {
     tag: 'g',
-    attributes: _extends$2({}, trans.inner),
-    children: [{ tag: 'path', attributes: _extends$2({}, mainPath.attributes, trans.path, { fill: 'black' }) }]
+    attributes: _extends$1({}, trans.inner),
+    children: [{ tag: 'path', attributes: _extends$1({}, mainPath.attributes, trans.path, { fill: 'black' }) }]
   };
   var maskOuterGroup = {
     tag: 'g',
-    attributes: _extends$2({}, trans.outer),
+    attributes: _extends$1({}, trans.outer),
     children: [maskInnerGroup]
   };
   var maskId = 'mask-' + nextUniqueId();
   var clipId = 'clip-' + nextUniqueId();
   var maskTag = {
     tag: 'mask',
-    attributes: _extends$2({}, ALL_SPACE, {
+    attributes: _extends$1({}, ALL_SPACE, {
       id: maskId,
       maskUnits: 'userSpaceOnUse',
       maskContentUnits: 'userSpaceOnUse'
@@ -1268,7 +607,7 @@ var makeIconMasking = function (_ref) {
     children: [{ tag: 'clipPath', attributes: { id: clipId }, children: [maskPath] }, maskTag]
   };
 
-  children.push(defs, { tag: 'rect', attributes: _extends$2({ fill: 'currentColor', 'clip-path': 'url(#' + clipId + ')', mask: 'url(#' + maskId + ')' }, ALL_SPACE) });
+  children.push(defs, { tag: 'rect', attributes: _extends$1({ fill: 'currentColor', 'clip-path': 'url(#' + clipId + ')', mask: 'url(#' + maskId + ')' }, ALL_SPACE) });
 
   return {
     children: children,
@@ -1293,14 +632,14 @@ var makeIconStandard = function (_ref) {
     var trans = transformForSvg({ transform: transform, containerWidth: main.width, iconWidth: main.width });
     children.push({
       tag: 'g',
-      attributes: _extends$2({}, trans.outer),
+      attributes: _extends$1({}, trans.outer),
       children: [{
         tag: 'g',
-        attributes: _extends$2({}, trans.inner),
+        attributes: _extends$1({}, trans.inner),
         children: [{
           tag: main.icon.tag,
           children: main.icon.children,
-          attributes: _extends$2({}, main.icon.attributes, trans.path)
+          attributes: _extends$1({}, main.icon.attributes, trans.path)
         }]
       }]
     });
@@ -1330,7 +669,7 @@ var asIcon = function (_ref) {
       x: width / height / 2,
       y: 0.5
     };
-    attributes['style'] = joinStyles(_extends$2({}, styles, {
+    attributes['style'] = joinStyles(_extends$1({}, styles, {
       'transform-origin': offset.x + transform.x / 16 + 'em ' + (offset.y + transform.y / 16) + 'em'
     }));
   }
@@ -1358,7 +697,7 @@ var asSymbol = function (_ref) {
     },
     children: [{
       tag: 'symbol',
-      attributes: _extends$2({}, attributes, { id: id }),
+      attributes: _extends$1({}, attributes, { id: id }),
       children: children
     }]
   }];
@@ -1388,7 +727,7 @@ function makeInlineSvgAbstract(params) {
 
   var content = {
     children: [],
-    attributes: _extends$2({}, extra.attributes, {
+    attributes: _extends$1({}, extra.attributes, {
       'data-prefix': prefix,
       'data-icon': iconName,
       'class': attrClass,
@@ -1404,7 +743,7 @@ function makeInlineSvgAbstract(params) {
 
   if (title) content.children.push({ tag: 'title', attributes: { id: content.attributes['aria-labelledby'] || 'title-' + nextUniqueId() }, children: [title] });
 
-  var args = _extends$2({}, content, {
+  var args = _extends$1({}, content, {
     prefix: prefix,
     iconName: iconName,
     main: main,
@@ -1637,37 +976,37 @@ var ANIMATION_BASE = {
 };
 var RING = {
   tag: 'path',
-  attributes: _extends$2({}, FILL, {
+  attributes: _extends$1({}, FILL, {
     d: 'M156.5,447.7l-12.6,29.5c-18.7-9.5-35.9-21.2-51.5-34.9l22.7-22.7C127.6,430.5,141.5,440,156.5,447.7z M40.6,272H8.5 c1.4,21.2,5.4,41.7,11.7,61.1L50,321.2C45.1,305.5,41.8,289,40.6,272z M40.6,240c1.4-18.8,5.2-37,11.1-54.1l-29.5-12.6 C14.7,194.3,10,216.7,8.5,240H40.6z M64.3,156.5c7.8-14.9,17.2-28.8,28.1-41.5L69.7,92.3c-13.7,15.6-25.5,32.8-34.9,51.5 L64.3,156.5z M397,419.6c-13.9,12-29.4,22.3-46.1,30.4l11.9,29.8c20.7-9.9,39.8-22.6,56.9-37.6L397,419.6z M115,92.4 c13.9-12,29.4-22.3,46.1-30.4l-11.9-29.8c-20.7,9.9-39.8,22.6-56.8,37.6L115,92.4z M447.7,355.5c-7.8,14.9-17.2,28.8-28.1,41.5 l22.7,22.7c13.7-15.6,25.5-32.9,34.9-51.5L447.7,355.5z M471.4,272c-1.4,18.8-5.2,37-11.1,54.1l29.5,12.6 c7.5-21.1,12.2-43.5,13.6-66.8H471.4z M321.2,462c-15.7,5-32.2,8.2-49.2,9.4v32.1c21.2-1.4,41.7-5.4,61.1-11.7L321.2,462z M240,471.4c-18.8-1.4-37-5.2-54.1-11.1l-12.6,29.5c21.1,7.5,43.5,12.2,66.8,13.6V471.4z M462,190.8c5,15.7,8.2,32.2,9.4,49.2h32.1 c-1.4-21.2-5.4-41.7-11.7-61.1L462,190.8z M92.4,397c-12-13.9-22.3-29.4-30.4-46.1l-29.8,11.9c9.9,20.7,22.6,39.8,37.6,56.9 L92.4,397z M272,40.6c18.8,1.4,36.9,5.2,54.1,11.1l12.6-29.5C317.7,14.7,295.3,10,272,8.5V40.6z M190.8,50 c15.7-5,32.2-8.2,49.2-9.4V8.5c-21.2,1.4-41.7,5.4-61.1,11.7L190.8,50z M442.3,92.3L419.6,115c12,13.9,22.3,29.4,30.5,46.1 l29.8-11.9C470,128.5,457.3,109.4,442.3,92.3z M397,92.4l22.7-22.7c-15.6-13.7-32.8-25.5-51.5-34.9l-12.6,29.5 C370.4,72.1,384.4,81.5,397,92.4z'
   })
 };
-var OPACITY_ANIMATE = _extends$2({}, ANIMATION_BASE, {
+var OPACITY_ANIMATE = _extends$1({}, ANIMATION_BASE, {
   attributeName: 'opacity'
 });
 var DOT = {
   tag: 'circle',
-  attributes: _extends$2({}, FILL, {
+  attributes: _extends$1({}, FILL, {
     cx: '256',
     cy: '364',
     r: '28'
   }),
-  children: [{ tag: 'animate', attributes: _extends$2({}, ANIMATION_BASE, { attributeName: 'r', values: '28;14;28;28;14;28;' }) }, { tag: 'animate', attributes: _extends$2({}, OPACITY_ANIMATE, { values: '1;0;1;1;0;1;' }) }]
+  children: [{ tag: 'animate', attributes: _extends$1({}, ANIMATION_BASE, { attributeName: 'r', values: '28;14;28;28;14;28;' }) }, { tag: 'animate', attributes: _extends$1({}, OPACITY_ANIMATE, { values: '1;0;1;1;0;1;' }) }]
 };
 var QUESTION = {
   tag: 'path',
-  attributes: _extends$2({}, FILL, {
+  attributes: _extends$1({}, FILL, {
     opacity: '1',
     d: 'M263.7,312h-16c-6.6,0-12-5.4-12-12c0-71,77.4-63.9,77.4-107.8c0-20-17.8-40.2-57.4-40.2c-29.1,0-44.3,9.6-59.2,28.7 c-3.9,5-11.1,6-16.2,2.4l-13.1-9.2c-5.6-3.9-6.9-11.8-2.6-17.2c21.2-27.2,46.4-44.7,91.2-44.7c52.3,0,97.4,29.8,97.4,80.2 c0,67.6-77.4,63.5-77.4,107.8C275.7,306.6,270.3,312,263.7,312z'
   }),
-  children: [{ tag: 'animate', attributes: _extends$2({}, OPACITY_ANIMATE, { values: '1;0;0;0;0;1;' }) }]
+  children: [{ tag: 'animate', attributes: _extends$1({}, OPACITY_ANIMATE, { values: '1;0;0;0;0;1;' }) }]
 };
 var EXCLAMATION = {
   tag: 'path',
-  attributes: _extends$2({}, FILL, {
+  attributes: _extends$1({}, FILL, {
     opacity: '0',
     d: 'M232.5,134.5l7,168c0.3,6.4,5.6,11.5,12,11.5h9c6.4,0,11.7-5.1,12-11.5l7-168c0.3-6.8-5.2-12.5-12-12.5h-23 C237.7,122,232.2,127.7,232.5,134.5z'
   }),
-  children: [{ tag: 'animate', attributes: _extends$2({}, OPACITY_ANIMATE, { values: '0;0;1;1;0;0;' }) }]
+  children: [{ tag: 'animate', attributes: _extends$1({}, OPACITY_ANIMATE, { values: '0;0;1;1;0;0;' }) }]
 };
 
 var styles = namespace.styles;
@@ -1707,7 +1046,7 @@ function define(prefix, icons) {
   if (typeof namespace.hooks.addPack === 'function') {
     namespace.hooks.addPack(prefix, normalized);
   } else {
-    namespace.styles[prefix] = _extends$2({}, namespace.styles[prefix] || {}, normalized);
+    namespace.styles[prefix] = _extends$1({}, namespace.styles[prefix] || {}, normalized);
   }
 
   /**
@@ -1723,12 +1062,12 @@ function define(prefix, icons) {
 
 var Library = function () {
   function Library() {
-    classCallCheck(this, Library);
+    classCallCheck$1(this, Library);
 
     this.definitions = {};
   }
 
-  createClass(Library, [{
+  createClass$1(Library, [{
     key: 'add',
     value: function add() {
       var _this = this;
@@ -1740,8 +1079,9 @@ var Library = function () {
       var additions = definitions.reduce(this._pullDefinitions, {});
 
       Object.keys(additions).forEach(function (key) {
-        _this.definitions[key] = _extends$2({}, _this.definitions[key] || {}, additions[key]);
+        _this.definitions[key] = _extends$1({}, _this.definitions[key] || {}, additions[key]);
         define(key, additions[key]);
+        build();
       });
     }
   }, {
@@ -1842,7 +1182,7 @@ function resolveIcons(next) {
       mask = (mask || {}).icon ? mask : findIconDefinition(mask || {});
     }
 
-    return next(iconDefinition, _extends$2({}, params, { mask: mask }));
+    return next(iconDefinition, _extends$1({}, params, { mask: mask }));
   };
 }
 
@@ -1881,7 +1221,7 @@ var icon = resolveIcons(function (iconDefinition) {
       icon = iconDefinition.icon;
 
 
-  return apiObject(_extends$2({ type: 'icon' }, iconDefinition), function () {
+  return apiObject(_extends$1({ type: 'icon' }, iconDefinition), function () {
     ensureCss();
 
     if (config.autoA11y) {
@@ -1899,7 +1239,7 @@ var icon = resolveIcons(function (iconDefinition) {
       },
       prefix: prefix,
       iconName: iconName,
-      transform: _extends$2({}, meaninglessTransform, transform),
+      transform: _extends$1({}, meaninglessTransform, transform),
       symbol: symbol,
       title: title,
       extra: {
@@ -2051,13 +1391,13 @@ var humps = createCommonjsModule$1(function (module) {
 })(commonjsGlobal$1);
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+var _typeof$1 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
   return typeof obj;
 } : function (obj) {
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
 
-var defineProperty = function (obj, key, value) {
+var defineProperty$1 = function (obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -2072,7 +1412,7 @@ var defineProperty = function (obj, key, value) {
   return obj;
 };
 
-var _extends$3 = Object.assign || function (target) {
+var _extends$2 = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];
 
@@ -2086,7 +1426,7 @@ var _extends$3 = Object.assign || function (target) {
   return target;
 };
 
-var objectWithoutProperties = function (obj, keys) {
+var objectWithoutProperties$1 = function (obj, keys) {
   var target = {};
 
   for (var i in obj) {
@@ -2098,7 +1438,7 @@ var objectWithoutProperties = function (obj, keys) {
   return target;
 };
 
-var toConsumableArray$1 = function (arr) {
+var toConsumableArray$2 = function (arr) {
   if (Array.isArray(arr)) {
     for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
 
@@ -2157,12 +1497,12 @@ function convert(createElement, element) {
 
   var _extraProps$style = extraProps.style,
       existingStyle = _extraProps$style === undefined ? {} : _extraProps$style,
-      remaining = objectWithoutProperties(extraProps, ['style']);
+      remaining = objectWithoutProperties$1(extraProps, ['style']);
 
 
-  mixins.attrs['style'] = _extends$3({}, mixins.attrs['style'], existingStyle);
+  mixins.attrs['style'] = _extends$2({}, mixins.attrs['style'], existingStyle);
 
-  return createElement.apply(undefined, [element.tag, _extends$3({}, mixins.attrs, remaining)].concat(toConsumableArray$1(children)));
+  return createElement.apply(undefined, [element.tag, _extends$2({}, mixins.attrs, remaining)].concat(toConsumableArray$2(children)));
 }
 
 var PRODUCTION$1 = false;
@@ -2180,7 +1520,7 @@ function log () {
 }
 
 function objectWithKey(key, value) {
-  return Array.isArray(value) && value.length > 0 || !Array.isArray(value) && value ? defineProperty({}, key, value) : {};
+  return Array.isArray(value) && value.length > 0 || !Array.isArray(value) && value ? defineProperty$1({}, key, value) : {};
 }
 
 function classList(props) {
@@ -2195,7 +1535,7 @@ function classList(props) {
     'fa-li': props.listItem,
     'fa-flip-horizontal': props.flip === 'horizontal' || props.flip === 'both',
     'fa-flip-vertical': props.flip === 'vertical' || props.flip === 'both'
-  }, defineProperty(_classes, 'fa-' + props.size, props.size !== null), defineProperty(_classes, 'fa-rotate-' + props.rotation, props.rotation !== null), defineProperty(_classes, 'fa-pull-' + props.pull, props.pull !== null), _classes);
+  }, defineProperty$1(_classes, 'fa-' + props.size, props.size !== null), defineProperty$1(_classes, 'fa-rotate-' + props.rotation, props.rotation !== null), defineProperty$1(_classes, 'fa-pull-' + props.pull, props.pull !== null), _classes);
 
   return Object.keys(classes).map(function (key) {
     return classes[key] ? key : null;
@@ -2209,7 +1549,7 @@ function normalizeIconArgs(icon$$1) {
     return null;
   }
 
-  if ((typeof icon$$1 === 'undefined' ? 'undefined' : _typeof(icon$$1)) === 'object' && icon$$1.prefix && icon$$1.iconName) {
+  if ((typeof icon$$1 === 'undefined' ? 'undefined' : _typeof$1(icon$$1)) === 'object' && icon$$1.prefix && icon$$1.iconName) {
     return icon$$1;
   }
 
@@ -2230,11 +1570,11 @@ function FontAwesomeIcon(props) {
 
 
   var iconLookup = normalizeIconArgs(iconArgs);
-  var classes = objectWithKey('classes', [].concat(toConsumableArray$1(classList(props)), toConsumableArray$1(className.split(' '))));
+  var classes = objectWithKey('classes', [].concat(toConsumableArray$2(classList(props)), toConsumableArray$2(className.split(' '))));
   var transform = objectWithKey('transform', typeof props.transform === 'string' ? parse.transform(props.transform) : props.transform);
   var mask = objectWithKey('mask', normalizeIconArgs(maskArgs));
 
-  var renderedIcon = icon(iconLookup, _extends$3({}, classes, transform, mask, {
+  var renderedIcon = icon(iconLookup, _extends$2({}, classes, transform, mask, {
     symbol: symbol
   }));
 
@@ -2259,35 +1599,35 @@ function FontAwesomeIcon(props) {
 FontAwesomeIcon.displayName = 'FontAwesomeIcon';
 
 FontAwesomeIcon.propTypes = {
-  border: propTypes.bool,
+  border: PropTypes.bool,
 
-  className: propTypes.string,
+  className: PropTypes.string,
 
-  mask: propTypes.oneOfType([propTypes.object, propTypes.array, propTypes.string]),
+  mask: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
 
-  fixedWidth: propTypes.bool,
+  fixedWidth: PropTypes.bool,
 
-  inverse: propTypes.bool,
+  inverse: PropTypes.bool,
 
-  flip: propTypes.oneOf(['horizontal', 'vertical', 'both']),
+  flip: PropTypes.oneOf(['horizontal', 'vertical', 'both']),
 
-  icon: propTypes.oneOfType([propTypes.object, propTypes.array, propTypes.string]),
+  icon: PropTypes.oneOfType([PropTypes.object, PropTypes.array, PropTypes.string]),
 
-  listItem: propTypes.bool,
+  listItem: PropTypes.bool,
 
-  pull: propTypes.oneOf(['right', 'left']),
+  pull: PropTypes.oneOf(['right', 'left']),
 
-  pulse: propTypes.bool,
+  pulse: PropTypes.bool,
 
-  rotation: propTypes.oneOf([90, 180, 270]),
+  rotation: PropTypes.oneOf([90, 180, 270]),
 
-  size: propTypes.oneOf(['lg', 'xs', 'sm', '1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x']),
+  size: PropTypes.oneOf(['lg', 'xs', 'sm', '1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x']),
 
-  spin: propTypes.bool,
+  spin: PropTypes.bool,
 
-  symbol: propTypes.oneOfType([propTypes.bool, propTypes.string]),
+  symbol: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
 
-  transform: propTypes.oneOfType([propTypes.string, propTypes.object])
+  transform: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
 
 FontAwesomeIcon.defaultProps = {
@@ -2310,276 +1650,331 @@ FontAwesomeIcon.defaultProps = {
 
 var convertCurry = convert.bind(null, React.createElement);
 
-class DatePicker extends React.Component {
-  constructor(props) {
-    super(props);
+var DatePicker = function (_React$Component) {
+  inherits(DatePicker, _React$Component);
 
-    this.setInput = o => this.input = o;
+  function DatePicker(props) {
+    classCallCheck(this, DatePicker);
 
-    this.changeHandler = e => this.setState({ value: this.value });
+    var _this = possibleConstructorReturn(this, (DatePicker.__proto__ || Object.getPrototypeOf(DatePicker)).call(this, props));
 
-    this.keyHandler = e => {
-      const key = e.keyCode;
+    _this.setInput = function (o) {
+      return _this.input = o;
+    };
+
+    _this.changeHandler = function (e) {
+      return _this.setState({ value: _this.value });
+    };
+
+    _this.keyHandler = function (e) {
+      var key = e.keyCode;
       e.preventDefault();
-      if (key === 37 && this.selectionMode > 1) this.selectionMode--;else if (key === 39 && this.selectionMode < 3) this.selectionMode++;else if (key === 38 && this.selectionMode === 1) this.year++;else if (key === 38 && this.selectionMode === 2) this.month++;else if (key === 38 && this.selectionMode === 3) this.day++;else if (key === 40 && this.selectionMode === 1) this.year--;else if (key === 40 && this.selectionMode === 2) this.month--;else if (key === 40 && this.selectionMode === 3) this.day--;else if (key >= 96 && key <= 105) {
-        if (key >= 96 && key <= 98 && this.month === 1 && this.selectionMode === 2) this.month = key - 86;else if (key >= 96 && key <= 97 && this.selectionMode === 2) this.month = 1;else if (key > 97 && this.selectionMode === 2) this.month = key - 96;else if (key >= 96 && this.day === 1 && this.selectionMode === 3) this.day = key - 86;else if (key >= 96 && this.day === 2 && this.selectionMode === 3) this.day = key - 76;else if (key >= 96 && this.day === 3 && this.selectionMode === 3) this.day = Math.min(key - 66, this.days[this.month]);else if (key >= 97 && this.selectionMode === 3) this.day = key - 96;
+      if (key === 37 && _this.selectionMode > 1) _this.selectionMode--;else if (key === 39 && _this.selectionMode < 3) _this.selectionMode++;else if (key === 38 && _this.selectionMode === 1) _this.year++;else if (key === 38 && _this.selectionMode === 2) _this.month++;else if (key === 38 && _this.selectionMode === 3) _this.day++;else if (key === 40 && _this.selectionMode === 1) _this.year--;else if (key === 40 && _this.selectionMode === 2) _this.month--;else if (key === 40 && _this.selectionMode === 3) _this.day--;else if (key >= 96 && key <= 105) {
+        if (key >= 96 && key <= 98 && _this.month === 1 && _this.selectionMode === 2) _this.month = key - 86;else if (key >= 96 && key <= 97 && _this.selectionMode === 2) _this.month = 1;else if (key > 97 && _this.selectionMode === 2) _this.month = key - 96;else if (key >= 96 && _this.day === 1 && _this.selectionMode === 3) _this.day = key - 86;else if (key >= 96 && _this.day === 2 && _this.selectionMode === 3) _this.day = key - 76;else if (key >= 96 && _this.day === 3 && _this.selectionMode === 3) _this.day = Math.min(key - 66, _this.days[_this.month]);else if (key >= 97 && _this.selectionMode === 3) _this.day = key - 96;
       }
-      setTimeout(this.selectText, 100);
+      setTimeout(_this.selectText, 100);
     };
 
-    this.selectText = () => {
-      if (this.selectionMode === 1) {
-        this.input.selectionStart = 0;
-        this.input.selectionEnd = 4;
-      } else if (this.selectionMode === 2) {
-        this.input.selectionStart = 5;
-        this.input.selectionEnd = 7;
-      } else if (this.selectionMode === 3) {
-        this.input.selectionStart = 8;
-        this.input.selectionEnd = 10;
+    _this.selectText = function () {
+      if (_this.selectionMode === 1) {
+        _this.input.selectionStart = 0;
+        _this.input.selectionEnd = 4;
+      } else if (_this.selectionMode === 2) {
+        _this.input.selectionStart = 5;
+        _this.input.selectionEnd = 7;
+      } else if (_this.selectionMode === 3) {
+        _this.input.selectionStart = 8;
+        _this.input.selectionEnd = 10;
       }
     };
 
-    this.show = e => {
-      this.setState({ show: !this.state.show, selectionYear: this.state.year, selectionMonth: this.state.month, index: 0 });
+    _this.show = function (e) {
+      _this.setState({ show: !_this.state.show, selectionYear: _this.state.year, selectionMonth: _this.state.month, index: 0 });
     };
 
-    this.showMonths = e => {
-      this.setState({ index: 1 });
+    _this.showMonths = function (e) {
+      _this.setState({ index: 1 });
     };
 
-    this.renderDaysList = () => {
-      const firstday = this.calculateDayOfWeek(this.state.selectionYear, this.state.selectionMonth, 1);
+    _this.renderDaysList = function () {
+      var firstday = _this.calculateDayOfWeek(_this.state.selectionYear, _this.state.selectionMonth, 1);
       var list = [];
-      for (let i = 0; i < this.daysofweek.length; i++) {
+      for (var i = 0; i < _this.daysofweek.length; i++) {
         list.push(React.createElement(
           "li",
           { className: s$2.header, key: i },
-          this.daysofweek[i]
+          _this.daysofweek[i]
         ));
       }
-      for (let i = 1; i <= firstday; i++) {
-        list.push(React.createElement("li", { key: 7 + i }));
+      for (var _i = 1; _i <= firstday; _i++) {
+        list.push(React.createElement("li", { key: 7 + _i }));
       }
-      for (let i = 1; i <= this.days[this.state.selectionMonth]; i++) {
-        let selected = this.state.year === this.state.selectionYear && this.state.month === this.state.selectionMonth && this.state.day === i;
-        let today = this.state.selectionYear === this.today.getFullYear() && this.state.selectionMonth === this.today.getMonth() + 1 && this.today.getDate() === i;
+      for (var _i2 = 1; _i2 <= _this.days[_this.state.selectionMonth]; _i2++) {
+        var selected = _this.state.year === _this.state.selectionYear && _this.state.month === _this.state.selectionMonth && _this.state.day === _i2;
+        var today = _this.state.selectionYear === _this.today.getFullYear() && _this.state.selectionMonth === _this.today.getMonth() + 1 && _this.today.getDate() === _i2;
         list.push(React.createElement(
           "li",
-          { className: classnames(selected && s$2.selected, today && s$2.today), key: 14 + i, "data-value": i },
-          i
+          { className: classnames(selected && s$2.selected, today && s$2.today), key: 14 + _i2, "data-value": _i2 },
+          _i2
         ));
       }
       return list;
     };
 
-    this.selectValue = e => {
+    _this.selectValue = function (e) {
       if (e.target.nodeName !== "LI") return;
-      const value = e.target.dataset.value;
+      var value = e.target.dataset.value;
       if (value === undefined) return;
-      if (this.state.index === 0) {
-        this.setState({ show: false, year: this.state.selectionYear, month: this.state.selectionMonth, day: Number(value) });
-      } else if (this.state.index === 1) {
-        this.setState({ index: 0, selectionMonth: Number(value) });
+      if (_this.state.index === 0) {
+        _this.setState({ show: false, year: _this.state.selectionYear, month: _this.state.selectionMonth, day: Number(value) });
+      } else if (_this.state.index === 1) {
+        _this.setState({ index: 0, selectionMonth: Number(value) });
       }
     };
 
-    this.today = new Date();
-    this.monthslang = {
+    _this.today = new Date();
+    _this.monthslang = {
       en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       es: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
     };
-    this.daysofweeklang = {
+    _this.daysofweeklang = {
       en: ["S", "M", "T", "W", "T", "F", "S"],
       es: ["D", "L", "M", "M", "J", "V", "S"]
     };
-    this.days = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    _this.days = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
     var lang = props.lang || navigator.language || navigator.userLanguage || "en";
     if (lang.length > 2) lang = lang.substring(0, 2);
-    this.months = this.monthslang[lang];
-    this.daysofweek = this.daysofweeklang[lang];
-    this.state = {
-      year: props.defaultYear || this.today.getFullYear(),
-      month: props.defaultMonth || this.today.getMonth() + 1,
-      day: props.defaultDay || this.today.getDay() + 1,
+    _this.months = _this.monthslang[lang];
+    _this.daysofweek = _this.daysofweeklang[lang];
+    _this.state = {
+      year: props.defaultYear || _this.today.getFullYear(),
+      month: props.defaultMonth || _this.today.getMonth() + 1,
+      day: props.defaultDay || _this.today.getDay() + 1,
       show: false,
       selectionYear: 0,
       selectionMonth: 0,
       index: 0
     };
     if (props.defaultValue) {
-      this.state.year = Number(props.defaultValue.substring(0, 4));
-      this.state.month = Number(props.defaultValue.substring(5, 7));
-      this.state.day = Number(props.defaultValue.substring(8, 10));
+      _this.state.year = Number(props.defaultValue.substring(0, 4));
+      _this.state.month = Number(props.defaultValue.substring(5, 7));
+      _this.state.day = Number(props.defaultValue.substring(8, 10));
     }
-    if (props.onChange) this.onChange = props.onChange;
+    if (props.onChange) _this.onChange = props.onChange;
+    return _this;
   }
-  render() {
-    var style = { width: this.props.width };
-    Object.assign(style, this.props.style);
-    return React.createElement(
-      "div",
-      { className: s$2.datepicker, style: style },
-      React.createElement(FontAwesomeIcon, { className: classnames(s$2.caret, s$2.left), icon: "caret-left", onClick: e => this.plusDay(-1) }),
-      React.createElement(FontAwesomeIcon, { className: s$2.calendar, icon: "calendar-alt", onClick: this.show }),
-      React.createElement("input", { className: s$2.sitcontrol, ref: this.setInput, name: this.props.name, value: this.value, onChange: this.changeHandler, onKeyDown: this.keyHandler, onClick: this.changeHandler }),
-      React.createElement(FontAwesomeIcon, { className: classnames(s$2.caret, s$2.right), icon: "caret-right", onClick: e => this.plusDay(1) }),
-      this.state.show && this.state.index === 0 && React.createElement(
+
+  createClass(DatePicker, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var style = { width: this.props.width };
+      Object.assign(style, this.props.style);
+      return React.createElement(
         "div",
-        { className: classnames(s$2.picker, s$2.byday) },
-        React.createElement(
+        { className: s$2.datepicker, style: style },
+        React.createElement(FontAwesomeIcon, { className: classnames(s$2.caret, s$2.left), icon: "caret-left", onClick: function onClick(e) {
+            return _this2.plusDay(-1);
+          } }),
+        React.createElement(FontAwesomeIcon, { className: s$2.calendar, icon: "calendar-alt", onClick: this.show }),
+        React.createElement("input", { className: s$2.sitcontrol, ref: this.setInput, name: this.props.name, value: this.value, onChange: this.changeHandler, onKeyDown: this.keyHandler, onClick: this.changeHandler }),
+        React.createElement(FontAwesomeIcon, { className: classnames(s$2.caret, s$2.right), icon: "caret-right", onClick: function onClick(e) {
+            return _this2.plusDay(1);
+          } }),
+        this.state.show && this.state.index === 0 && React.createElement(
           "div",
-          null,
-          React.createElement(FontAwesomeIcon, { className: classnames(s$2.angle, s$2.left), icon: "angle-left", onClick: e => this.plusMonth(-1) }),
+          { className: classnames(s$2.picker, s$2.byday) },
           React.createElement(
-            "span",
-            { onClick: this.showMonths },
-            this.months[this.state.selectionMonth - 1] + " " + this.state.selectionYear
+            "div",
+            null,
+            React.createElement(FontAwesomeIcon, { className: classnames(s$2.angle, s$2.left), icon: "angle-left", onClick: function onClick(e) {
+                return _this2.plusMonth(-1);
+              } }),
+            React.createElement(
+              "span",
+              { onClick: this.showMonths },
+              this.months[this.state.selectionMonth - 1] + " " + this.state.selectionYear
+            ),
+            React.createElement(FontAwesomeIcon, { className: classnames(s$2.angle, s$2.right), icon: "angle-right", onClick: function onClick(e) {
+                return _this2.plusMonth(1);
+              } })
           ),
-          React.createElement(FontAwesomeIcon, { className: classnames(s$2.angle, s$2.right), icon: "angle-right", onClick: e => this.plusMonth(1) })
+          React.createElement(
+            "ul",
+            { onClick: this.selectValue },
+            this.renderDaysList(),
+            React.createElement("br", { style: { clear: "both" } })
+          )
         ),
-        React.createElement(
-          "ul",
-          { onClick: this.selectValue },
-          this.renderDaysList(),
-          React.createElement("br", { style: { clear: "both" } })
-        )
-      ),
-      this.state.show && this.state.index === 1 && React.createElement(
-        "div",
-        { className: classnames(s$2.picker, s$2.bymonth) },
-        React.createElement(
+        this.state.show && this.state.index === 1 && React.createElement(
           "div",
-          null,
-          React.createElement(FontAwesomeIcon, { className: classnames(s$2.angle, s$2.left), icon: "angle-left", onClick: e => this.plusYear(-1) }),
-          this.state.selectionYear,
-          React.createElement(FontAwesomeIcon, { className: classnames(s$2.angle, s$2.right), icon: "angle-right", onClick: e => this.plusYear(1) })
-        ),
-        React.createElement(
-          "ul",
-          { onClick: this.selectValue },
-          this.months.map((y, i) => React.createElement(
-            "li",
-            { className: this.state.month === i + 1 && this.state.selectionYear === this.state.year ? s$2.selected : undefined, "data-value": i + 1, key: i },
-            y.substring(0, 3)
-          )),
-          React.createElement("br", { style: { clear: "both" } })
+          { className: classnames(s$2.picker, s$2.bymonth) },
+          React.createElement(
+            "div",
+            null,
+            React.createElement(FontAwesomeIcon, { className: classnames(s$2.angle, s$2.left), icon: "angle-left", onClick: function onClick(e) {
+                return _this2.plusYear(-1);
+              } }),
+            this.state.selectionYear,
+            React.createElement(FontAwesomeIcon, { className: classnames(s$2.angle, s$2.right), icon: "angle-right", onClick: function onClick(e) {
+                return _this2.plusYear(1);
+              } })
+          ),
+          React.createElement(
+            "ul",
+            { onClick: this.selectValue },
+            this.months.map(function (y, i) {
+              return React.createElement(
+                "li",
+                { className: _this2.state.month === i + 1 && _this2.state.selectionYear === _this2.state.year ? s$2.selected : undefined, "data-value": i + 1, key: i },
+                y.substring(0, 3)
+              );
+            }),
+            React.createElement("br", { style: { clear: "both" } })
+          )
         )
-      )
-    );
-  }
-  componentDidUpdate() {
-    if (this.oldValue !== this.value) {
-      this.onChange({ target: this, oldValue: this.oldValue, newValue: this.value });
-      this.oldValue = this.value;
+      );
     }
-    if (this.input !== document.activeElement) {
-      this.selectionMode = 0;
-      return;
-    }
-    setTimeout(() => {
-      const s = this.input.selectionStart;
-      if (s >= 0 && s <= 4) this.selectionMode = 1;else if (s >= 5 && s <= 7) this.selectionMode = 2;else if (s >= 8 && s <= 10) this.selectionMode = 3;
-      this.selectText();
-    }, 100);
-  }
-  set day(day) {
-    if (day < 1 || day > this.days[this.state.month]) return;
-    this.setState({ day });
-  }
-  get day() {
-    return this.state.day;
-  }
-  get dayStr() {
-    return (this.state.day < 10 ? "0" : "") + this.state.day;
-  }
-  get dayOfWeek() {
-    return this.calculateDayOfWeek(this.state.year, this.state.month, this.state.day);
-  }
-  get month() {
-    return this.state.month;
-  }
-  get monthStr() {
-    return (this.state.month < 10 ? "0" : "") + this.state.month;
-  }
-  set month(month) {
-    if (month < 1 || month > 12) return;
-    this.setState({ month, show: false });
-  }
-  get year() {
-    return this.state.year;
-  }
-  set year(year) {
-    this.setState({ year, show: false });
-  }
-  get value() {
-    return this.year + "-" + this.monthStr + "-" + this.dayStr;
-  }
-  set value(date) {
-    var y = date.substring(0, 4);
-    var m = date.substring(5, 7);
-    var d = date.substring(8, 10);
-    this.setState({ year: Number(y), month: Number(m), day: Number(d) });
-  }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      var _this3 = this;
 
-  calculateDayOfWeek(y, m, d) {
-    const t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
-    y -= m < 3;
-    return (y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) + t[m - 1] + d) % 7;
-  }
-
-  plusYear(n) {
-    this.setState({ selectionYear: this.state.selectionYear + n });
-  }
-  plusMonth(n) {
-    var month = this.state.selectionMonth + n;
-    var year = this.state.selectionYear;
-    if (month <= 0) {
-      month = 12;
-      year--;
+      if (this.oldValue !== this.value) {
+        this.onChange({ target: this, oldValue: this.oldValue, newValue: this.value });
+        this.oldValue = this.value;
+      }
+      if (this.input !== document.activeElement) {
+        this.selectionMode = 0;
+        return;
+      }
+      setTimeout(function () {
+        var s = _this3.input.selectionStart;
+        if (s >= 0 && s <= 4) _this3.selectionMode = 1;else if (s >= 5 && s <= 7) _this3.selectionMode = 2;else if (s >= 8 && s <= 10) _this3.selectionMode = 3;
+        _this3.selectText();
+      }, 100);
     }
-    if (month >= 13) {
-      month = 1;
-      year++;
+  }, {
+    key: "calculateDayOfWeek",
+    value: function calculateDayOfWeek(y, m, d) {
+      var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
+      y -= m < 3;
+      return (y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) + t[m - 1] + d) % 7;
     }
-    this.setState({ selectionYear: year, selectionMonth: month });
-  }
-  plusDay(n) {
-    var day = this.state.day + n;
-    var month = this.state.month;
-    var year = this.state.year;
-    if (day <= 0) {
-      month--;
-      if (month === 0) {
+  }, {
+    key: "plusYear",
+    value: function plusYear(n) {
+      this.setState({ selectionYear: this.state.selectionYear + n });
+    }
+  }, {
+    key: "plusMonth",
+    value: function plusMonth(n) {
+      var month = this.state.selectionMonth + n;
+      var year = this.state.selectionYear;
+      if (month <= 0) {
         month = 12;
         year--;
       }
-      day = this.days[month];
-    }
-    if (day > this.days[month]) {
-      day = 1;
-      month++;
-      if (month > 12) {
+      if (month >= 13) {
         month = 1;
         year++;
       }
+      this.setState({ selectionYear: year, selectionMonth: month });
     }
-    this.setState({ year, month, day, selectionYear: year, selectionMonth: month });
-  }
-}
+  }, {
+    key: "plusDay",
+    value: function plusDay(n) {
+      var day = this.state.day + n;
+      var month = this.state.month;
+      var year = this.state.year;
+      if (day <= 0) {
+        month--;
+        if (month === 0) {
+          month = 12;
+          year--;
+        }
+        day = this.days[month];
+      }
+      if (day > this.days[month]) {
+        day = 1;
+        month++;
+        if (month > 12) {
+          month = 1;
+          year++;
+        }
+      }
+      this.setState({ year: year, month: month, day: day, selectionYear: year, selectionMonth: month });
+    }
+  }, {
+    key: "day",
+    set: function set$$1(day) {
+      if (day < 1 || day > this.days[this.state.month]) return;
+      this.setState({ day: day });
+    },
+    get: function get$$1() {
+      return this.state.day;
+    }
+  }, {
+    key: "dayStr",
+    get: function get$$1() {
+      return (this.state.day < 10 ? "0" : "") + this.state.day;
+    }
+  }, {
+    key: "dayOfWeek",
+    get: function get$$1() {
+      return this.calculateDayOfWeek(this.state.year, this.state.month, this.state.day);
+    }
+  }, {
+    key: "month",
+    get: function get$$1() {
+      return this.state.month;
+    },
+    set: function set$$1(month) {
+      if (month < 1 || month > 12) return;
+      this.setState({ month: month, show: false });
+    }
+  }, {
+    key: "monthStr",
+    get: function get$$1() {
+      return (this.state.month < 10 ? "0" : "") + this.state.month;
+    }
+  }, {
+    key: "year",
+    get: function get$$1() {
+      return this.state.year;
+    },
+    set: function set$$1(year) {
+      this.setState({ year: year, show: false });
+    }
+  }, {
+    key: "value",
+    get: function get$$1() {
+      return this.year + "-" + this.monthStr + "-" + this.dayStr;
+    },
+    set: function set$$1(date) {
+      var y = date.substring(0, 4);
+      var m = date.substring(5, 7);
+      var d = date.substring(8, 10);
+      this.setState({ year: Number(y), month: Number(m), day: Number(d) });
+    }
+  }]);
+  return DatePicker;
+}(React.Component);
+
 
 DatePicker.defaultProps = {
   style: {},
-  onChange: () => {}
+  onChange: function onChange() {}
 };
 
 DatePicker.propType = {
-  value: propTypes.string,
-  onChange: propTypes.func
+  value: PropTypes.string,
+  onChange: PropTypes.func
 };
 
 /*!
- * Font Awesome Free 5.1.0-11 by @fontawesome - https://fontawesome.com
+ * Font Awesome Free 5.2.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */
 var faAngleLeft = { prefix: 'fas', iconName: 'angle-left', icon: [256, 512, [], "f104", "M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"] };
@@ -2590,12 +1985,7 @@ var faCaretRight = { prefix: 'fas', iconName: 'caret-right', icon: [192, 512, []
 
 library.add(faCaretLeft, faCaretRight, faAngleLeft, faAngleRight, faCalendarAlt);
 
-var SitControls = {
-  Input: Input,
-  InputBox: InputBox,
-  DatePicker: DatePicker
-};
+var index = { Input: Input, InputBox: InputBox, DatePicker: DatePicker };
 
-export default SitControls;
-export { Input, InputBox, DatePicker };
+export default index;
 //# sourceMappingURL=index.module.js.map

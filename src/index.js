@@ -6,12 +6,4 @@ import { faCaretLeft, faCaretRight, faAngleLeft, faAngleRight, faCalendarAlt } f
 
 library.add(faCaretLeft, faCaretRight, faAngleLeft, faAngleRight, faCalendarAlt);
 
-var SitControls = {
-  Input: Input,
-  InputBox: InputBox,
-  DatePicker: DatePicker
-};
-
-export { Input, InputBox, DatePicker };
-
-export default SitControls;
+export default { Input, InputBox, DatePicker };
