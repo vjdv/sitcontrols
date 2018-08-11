@@ -1985,7 +1985,5 @@ var faCaretRight = { prefix: 'fas', iconName: 'caret-right', icon: [192, 512, []
 
 library.add(faCaretLeft, faCaretRight, faAngleLeft, faAngleRight, faCalendarAlt);
 
-var index = { Input: Input, InputBox: InputBox, DatePicker: DatePicker };
-
-export default index;
+export { Input, InputBox, DatePicker };
 //# sourceMappingURL=index.module.js.map

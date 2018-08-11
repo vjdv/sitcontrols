@@ -6,4 +6,4 @@ import { faCaretLeft, faCaretRight, faAngleLeft, faAngleRight, faCalendarAlt } f
 
 library.add(faCaretLeft, faCaretRight, faAngleLeft, faAngleRight, faCalendarAlt);
 
-export default { Input, InputBox, DatePicker };
+export { Input, InputBox, DatePicker };
