@@ -1520,8 +1520,8 @@ Button.defaultProps = {
   loading: false
 };
 
-var css$2 = ".input_sitcontrol__3iLVi {\n  display: block;\n  width: 100%;\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid #ced4da;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  overflow: visible;\n  margin: 0;\n  font-family: inherit;\n  box-sizing: border-box; }\n  .input_sitcontrol__3iLVi:focus {\n    color: #495057;\n    background-color: #fff;\n    border-color: #80bdff;\n    outline: 0;\n    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }\n  .input_sitcontrol__3iLVi:disabled, .input_sitcontrol__3iLVi[readonly] {\n    background-color: #e9ecef;\n    opacity: 1; }\n";
-var s$1 = { "sitcontrol": "input_sitcontrol__3iLVi" };
+var css$2 = ".input_sitcontrol__2l-qC {\n  display: block;\n  width: 100%;\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid #ced4da;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  overflow: visible;\n  margin: 0;\n  font-family: inherit;\n  box-sizing: border-box; }\n  .input_sitcontrol__2l-qC:focus {\n    color: #495057;\n    background-color: #fff;\n    border-color: #80bdff;\n    outline: 0;\n    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }\n  .input_sitcontrol__2l-qC:disabled, .input_sitcontrol__2l-qC[readonly] {\n    background-color: #e9ecef;\n    opacity: 1; }\n";
+var s$1 = { "sitcontrol": "input_sitcontrol__2l-qC" };
 styleInject(css$2);
 
 var input_counter = 0;
@@ -1597,11 +1597,11 @@ Input.propTypes = {
   onChange: PropTypes.func
 };
 
-var css$3 = ".inputbox_sitcontrolbox__35IBH label {\n  display: inline-block;\n  margin: 0.4rem 0 0.2rem 0; }\n";
-var s$2 = { "sitcontrolbox": "inputbox_sitcontrolbox__35IBH" };
+var css$3 = ".inputbox_sitbox__21ei6 label {\n  display: inline-block;\n  margin: 0.4rem 0 0.2rem 0;\n  width: 100%; }\n";
+var s$2 = { "sitbox": "inputbox_sitbox__21ei6" };
 styleInject(css$3);
 
-var inputbox_counter;
+var counter$1;
 function InputBox(props) {
   var id = props.id,
       label = props.label,
@@ -1609,15 +1609,16 @@ function InputBox(props) {
       ref = props.ref,
       iprops = objectWithoutProperties$1(props, ["id", "label", "loading", "ref"]);
 
-  id = id || "sitcontrol" + ++inputbox_counter;
+  id = id || "sitcontrolbox" + ++counter$1;
   return React.createElement(
     "div",
-    { className: s$2.sitcontrolbox },
+    { className: s$2.sitbox },
     React.createElement(
       "label",
       { htmlFor: id || this.id },
-      label,
-      loading && React.createElement("span", { className: "icon-spin5 animate-spin" })
+      loading && React.createElement(FontAwesomeIcon, { className: "fa-pulse", icon: "spinner" }),
+      loading && " ",
+      label
     ),
     React.createElement(Input, _extends$2({ ref: ref, id: id || this.id }, iprops))
   );
@@ -1627,6 +1628,10 @@ InputBox.propTypes = {
   label: PropTypes.string.isRequired,
   id: PropTypes.string,
   loading: PropTypes.bool
+};
+
+InputBox.defaultProps = {
+  loading: false
 };
 
 function createCommonjsModule$1(fn, module) {
