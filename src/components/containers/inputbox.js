@@ -1,5 +1,5 @@
 import React from "react";
-import Input from "./input";
+import Input from "./../inputs/input";
 import PropTypes from "prop-types";
 import s from "./inputbox.scss";
 
