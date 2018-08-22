@@ -1808,7 +1808,7 @@ var InputOption = function (_React$Component) {
           }).map(function (o, i) {
             return React.createElement(
               "div",
-              { className: o.sit_fid === _this2.state.selectedIndex && s2.selected, "data-index": o.sit_fid, key: i },
+              { className: classnames(o.sit_fid === _this2.state.selectedIndex && s2.selected), "data-index": o.sit_fid, key: i },
               o[_this2.labelField]
             );
           })

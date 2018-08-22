@@ -31,7 +31,7 @@ export default class InputOption extends React.Component {
               <span>Sin coincidencias</span>
             ) : (
               this.state.filteredOptions.filter((o, i) => i >= this.state.from && i < this.state.from + this.maxVisibleOptions).map((o, i) => (
-                <div className={o.sit_fid === this.state.selectedIndex && s2.selected} data-index={o.sit_fid} key={i}>
+                <div className={cx(o.sit_fid === this.state.selectedIndex && s2.selected)} data-index={o.sit_fid} key={i}>
                   {o[this.labelField]}
                 </div>
               ))
