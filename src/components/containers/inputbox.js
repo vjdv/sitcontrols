@@ -2,6 +2,7 @@ import React from "react";
 import Input from "./../inputs/input";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import cx from "classnames";
 import s from "./inputbox.scss";
 
 var counter;
@@ -9,7 +10,7 @@ function InputBox(props) {
   var { id, label, loading, ref, ...iprops } = props;
   id = id || `sitcontrolbox${++counter}`;
   return (
-    <div className={s.sitbox}>
+    <div className={cx(s.sitbox)}>
       <label htmlFor={id || this.id}>
         {loading && <FontAwesomeIcon className="fa-pulse" icon="spinner" />}
         {loading && " "}

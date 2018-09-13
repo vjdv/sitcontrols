@@ -67,7 +67,8 @@ Select.defaultProps = {
   labelField: "label",
   valueField: "value",
   onChange: () => {},
-  style: {}
+  style: {},
+  options: []
 };
 Select.propTypes = {
   value: PropTypes.string,

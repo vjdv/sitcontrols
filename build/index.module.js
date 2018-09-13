@@ -1591,43 +1591,6 @@ Input.propTypes = {
   onChange: PropTypes.func
 };
 
-var css$3 = ".inputbox_sitbox__21ei6 label {\n  display: inline-block;\n  margin: 0.4rem 0 0.2rem 0;\n  width: 100%; }\n";
-var s$2 = { "sitbox": "inputbox_sitbox__21ei6" };
-styleInject(css$3);
-
-var counter$1;
-function InputBox(props) {
-  var id = props.id,
-      label = props.label,
-      loading = props.loading,
-      ref = props.ref,
-      iprops = objectWithoutProperties$1(props, ["id", "label", "loading", "ref"]);
-
-  id = id || "sitcontrolbox" + ++counter$1;
-  return React.createElement(
-    "div",
-    { className: s$2.sitbox },
-    React.createElement(
-      "label",
-      { htmlFor: id || this.id },
-      loading && React.createElement(FontAwesomeIcon, { className: "fa-pulse", icon: "spinner" }),
-      loading && " ",
-      label
-    ),
-    React.createElement(Input, _extends$2({ ref: ref, id: id || this.id }, iprops))
-  );
-}
-
-InputBox.propTypes = {
-  label: PropTypes.string.isRequired,
-  id: PropTypes.string,
-  loading: PropTypes.bool
-};
-
-InputBox.defaultProps = {
-  loading: false
-};
-
 function createCommonjsModule$1(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
@@ -1685,6 +1648,43 @@ var classnames = createCommonjsModule$1(function (module) {
 	}
 }());
 });
+
+var css$3 = ".inputbox_sitbox__21ei6 label {\n  display: inline-block;\n  margin: 0.4rem 0 0.2rem 0;\n  width: 100%; }\n";
+var s$2 = { "sitbox": "inputbox_sitbox__21ei6" };
+styleInject(css$3);
+
+var counter$1;
+function InputBox(props) {
+  var id = props.id,
+      label = props.label,
+      loading = props.loading,
+      ref = props.ref,
+      iprops = objectWithoutProperties$1(props, ["id", "label", "loading", "ref"]);
+
+  id = id || "sitcontrolbox" + ++counter$1;
+  return React.createElement(
+    "div",
+    { className: classnames(s$2.sitbox) },
+    React.createElement(
+      "label",
+      { htmlFor: id || this.id },
+      loading && React.createElement(FontAwesomeIcon, { className: "fa-pulse", icon: "spinner" }),
+      loading && " ",
+      label
+    ),
+    React.createElement(Input, _extends$2({ ref: ref, id: id || this.id }, iprops))
+  );
+}
+
+InputBox.propTypes = {
+  label: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  loading: PropTypes.bool
+};
+
+InputBox.defaultProps = {
+  loading: false
+};
 
 var css$4 = ".inputoption_inputoption__1qmWP {\n  position: relative; }\n  .inputoption_inputoption__1qmWP > div {\n    position: absolute;\n    top: 100%;\n    background-color: rgba(255, 255, 255, 0.9);\n    padding: 0.5rem;\n    z-index: 100;\n    border-bottom-right-radius: 4px;\n    border-bottom-left-radius: 4px;\n    background-color: #fff;\n    border: 1px solid #ccc;\n    border-top-color: #e6e6e6;\n    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);\n    box-sizing: border-box;\n    margin-top: -1px;\n    max-height: 200px;\n    width: 100%;\n    font-size: 0.95rem; }\n    .inputoption_inputoption__1qmWP > div > span {\n      color: #aaa;\n      font-style: italic;\n      font-size: 0.9rem; }\n    .inputoption_inputoption__1qmWP > div > div {\n      padding: 0.2rem;\n      color: #222; }\n      .inputoption_inputoption__1qmWP > div > div.inputoption_selected__3FGPn {\n        background-color: rgba(0, 0, 255, 0.15); }\n  .inputoption_inputoption__1qmWP input {\n    color: #888; }\n  .inputoption_inputoption__1qmWP.inputoption_choiced__1Nl9M input {\n    color: #333; }\n";
 var s2 = { "inputoption": "inputoption_inputoption__1qmWP", "selected": "inputoption_selected__3FGPn", "choiced": "inputoption_choiced__1Nl9M" };
@@ -2299,7 +2299,8 @@ Select.defaultProps = {
   labelField: "label",
   valueField: "value",
   onChange: function onChange() {},
-  style: {}
+  style: {},
+  options: []
 };
 Select.propTypes = {
   value: PropTypes.string,
@@ -2311,6 +2312,40 @@ Select.propTypes = {
   labelFunc: PropTypes.func,
   valueFunc: PropTypes.func,
   style: PropTypes.object
+};
+
+var counter$2;
+function SelectBox(props) {
+  var id = props.id,
+      label = props.label,
+      loading = props.loading,
+      className = props.className,
+      ref = props.ref,
+      sprops = objectWithoutProperties$1(props, ["id", "label", "loading", "className", "ref"]);
+
+  id = id || "sitselectbox" + ++counter$2;
+  return React.createElement(
+    "div",
+    { className: classnames(s$2.sitbox, className) },
+    React.createElement(
+      "label",
+      { htmlFor: id },
+      loading && React.createElement(FontAwesomeIcon, { icon: "spinner", pulse: true }),
+      loading && " ",
+      label
+    ),
+    React.createElement(Select, _extends$2({ ref: ref, id: id }, sprops))
+  );
+}
+
+SelectBox.propTypes = {
+  label: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  loading: PropTypes.bool
+};
+
+SelectBox.defaultProps = {
+  loading: false
 };
 
 /*!
@@ -2326,5 +2361,5 @@ var faSpinner = { prefix: 'fas', iconName: 'spinner', icon: [512, 512, [], "f110
 
 library.add(faSpinner, faCaretLeft, faCaretRight, faAngleLeft, faAngleRight, faCalendarAlt);
 
-export { Button, Input, InputBox, InputOption, DatePicker, Select };
+export { Button, Input, InputBox, InputOption, DatePicker, Select, SelectBox };
 //# sourceMappingURL=index.module.js.map
