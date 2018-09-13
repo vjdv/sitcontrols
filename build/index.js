@@ -1521,7 +1521,7 @@ Button.defaultProps = {
 };
 
 var css$2 = ".input_sitcontrol__2l-qC {\n  display: block;\n  width: 100%;\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid #ced4da;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  overflow: visible;\n  margin: 0;\n  font-family: inherit;\n  box-sizing: border-box; }\n  .input_sitcontrol__2l-qC:focus {\n    color: #495057;\n    background-color: #fff;\n    border-color: #80bdff;\n    outline: 0;\n    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }\n  .input_sitcontrol__2l-qC:disabled, .input_sitcontrol__2l-qC[readonly] {\n    background-color: #e9ecef;\n    opacity: 1; }\n";
-var s1 = { "sitcontrol": "input_sitcontrol__2l-qC" };
+var s$1 = { "sitcontrol": "input_sitcontrol__2l-qC" };
 styleInject(css$2);
 
 var input_counter = 0;
@@ -1563,7 +1563,7 @@ var Input = function (_React$Component) {
           inputprops = objectWithoutProperties$1(_props, ["id", "value", "defaultValue", "onChange", "accept"]);
 
       id = id || "sitinp" + ++input_counter;
-      return React.createElement("input", _extends$2({ className: s1.sitcontrol, id: id, value: this.state.value, onChange: this.changeHandler }, inputprops));
+      return React.createElement("input", _extends$2({ className: s$1.sitcontrol, id: id, value: this.state.value, onChange: this.changeHandler }, inputprops));
     }
   }, {
     key: "value",
@@ -1598,7 +1598,7 @@ Input.propTypes = {
 };
 
 var css$3 = ".inputbox_sitbox__21ei6 label {\n  display: inline-block;\n  margin: 0.4rem 0 0.2rem 0;\n  width: 100%; }\n";
-var s$1 = { "sitbox": "inputbox_sitbox__21ei6" };
+var s$2 = { "sitbox": "inputbox_sitbox__21ei6" };
 styleInject(css$3);
 
 var counter$1;
@@ -1612,7 +1612,7 @@ function InputBox(props) {
   id = id || "sitcontrolbox" + ++counter$1;
   return React.createElement(
     "div",
-    { className: s$1.sitbox },
+    { className: s$2.sitbox },
     React.createElement(
       "label",
       { htmlFor: id || this.id },
@@ -1800,7 +1800,7 @@ var InputOption = function (_React$Component) {
       return React.createElement(
         "div",
         { className: classnames(s2.inputoption, this.state.value === "" && s2.choiced), style: style },
-        React.createElement("input", { type: "search", className: s1.sitcontrol, value: this.state.text, onChange: this.changeHandler, onKeyDown: this.keyHandler, onFocus: this.showOptions, onBlur: this.hideOptions }),
+        React.createElement("input", { type: "search", className: s$1.sitcontrol, value: this.state.text, onChange: this.changeHandler, onKeyDown: this.keyHandler, onFocus: this.showOptions, onBlur: this.hideOptions }),
         React.createElement("input", { type: "hidden", name: this.props.name, value: this.state.value }),
         this.state.show && React.createElement(
           "div",
@@ -1870,7 +1870,7 @@ var InputOption = function (_React$Component) {
 }(React.Component);
 
 var css$5 = ".datepicker_sitcontrol__MlvQI {\n  display: block;\n  width: 100%;\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid #ced4da;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  overflow: visible;\n  margin: 0;\n  font-family: inherit;\n  box-sizing: border-box; }\n  .datepicker_sitcontrol__MlvQI:focus {\n    color: #495057;\n    background-color: #fff;\n    border-color: #80bdff;\n    outline: 0;\n    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }\n  .datepicker_sitcontrol__MlvQI:disabled, .datepicker_sitcontrol__MlvQI[readonly] {\n    background-color: #e9ecef;\n    opacity: 1; }\n\n.datepicker_datepicker__3yh6x {\n  display: block;\n  width: 100%;\n  background-color: #fff;\n  position: relative;\n  user-select: none; }\n  .datepicker_datepicker__3yh6x > .datepicker_sitcontrol__MlvQI {\n    padding-left: 1rem;\n    padding-right: 2.5rem;\n    text-align: center;\n    color: #787b7d; }\n  .datepicker_datepicker__3yh6x .datepicker_caret__2zRLa {\n    position: absolute;\n    top: 0.5rem;\n    color: #bbb;\n    padding: 0 0.2rem;\n    box-sizing: content-box; }\n    .datepicker_datepicker__3yh6x .datepicker_caret__2zRLa.datepicker_left__iAiHG {\n      left: 0.2rem; }\n    .datepicker_datepicker__3yh6x .datepicker_caret__2zRLa.datepicker_right__543yF {\n      right: 1.5rem; }\n  .datepicker_datepicker__3yh6x > .datepicker_calendar__ZFo0k {\n    position: absolute;\n    top: 0.5rem;\n    right: 0.3rem;\n    color: #787b7d; }\n  .datepicker_datepicker__3yh6x:hover .datepicker_caret__2zRLa {\n    color: #787b7d; }\n    .datepicker_datepicker__3yh6x:hover .datepicker_caret__2zRLa:hover {\n      color: #111; }\n  .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 {\n    position: absolute;\n    top: 30px;\n    z-index: 100;\n    background-color: rgba(255, 255, 255, 0.96);\n    border: 1px solid #ccc;\n    box-shadow: 0 1px 5px #ddd;\n    border-radius: 7px;\n    padding: 10px;\n    box-sizing: border-box; }\n    .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div {\n      font-size: 1rem;\n      position: relative;\n      text-align: center;\n      font-weight: bold; }\n      .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div .datepicker_angle__3SzdO {\n        font-style: normal;\n        text-align: center;\n        width: 1.4rem;\n        height: 1.4rem;\n        position: absolute;\n        top: 0;\n        cursor: pointer;\n        border-radius: 50%; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div .datepicker_angle__3SzdO:hover {\n          background-color: rgba(255, 227, 160, 0.59); }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div .datepicker_angle__3SzdO.datepicker_left__iAiHG {\n          left: 0; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div .datepicker_angle__3SzdO.datepicker_right__543yF {\n          right: 0; }\n    .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul {\n      width: 182px;\n      font-size: 0;\n      padding: 5px 0 0 0;\n      box-sizing: border-box; }\n      .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li {\n        font-size: 0.9rem;\n        line-height: 0.9rem;\n        display: block;\n        border-radius: 7px;\n        width: 26px;\n        height: 1.15rem;\n        padding: 0.125rem 0.25rem;\n        float: left;\n        text-align: center;\n        box-sizing: border-box;\n        transition: background-color ease-in-out 300ms; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li:hover {\n          background-color: rgba(255, 227, 160, 0.59);\n          cursor: pointer; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li.datepicker_selected__S1Yg2 {\n          background-color: rgba(31, 42, 58, 0.73);\n          color: #fff; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li.datepicker_today__1RBsT {\n          border: 1px #1c5ec9 solid; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li.datepicker_header__3Nx4g {\n          font-size: 0.7rem;\n          padding: 0;\n          font-weight: bold;\n          height: 1rem;\n          background-color: transparent;\n          cursor: default; }\n    .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_bymonth__3D7BL > ul {\n      width: 180px;\n      font-size: 0;\n      padding: 5px 0 0 0;\n      box-sizing: border-box; }\n      .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_bymonth__3D7BL > ul li {\n        font-size: 1rem;\n        display: block;\n        border-radius: 7px;\n        width: 60px;\n        height: 35px;\n        padding: 5px;\n        float: left;\n        text-align: center;\n        box-sizing: border-box;\n        transition: background-color ease-in-out 300ms; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_bymonth__3D7BL > ul li:hover {\n          background-color: rgba(255, 227, 160, 0.59);\n          cursor: pointer; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_bymonth__3D7BL > ul li.datepicker_selected__S1Yg2 {\n          background-color: rgba(31, 42, 58, 0.73);\n          color: #fff; }\n";
-var s$2 = { "sitcontrol": "datepicker_sitcontrol__MlvQI", "datepicker": "datepicker_datepicker__3yh6x", "caret": "datepicker_caret__2zRLa", "left": "datepicker_left__iAiHG", "right": "datepicker_right__543yF", "calendar": "datepicker_calendar__ZFo0k", "picker": "datepicker_picker__2yEN5", "angle": "datepicker_angle__3SzdO", "byday": "datepicker_byday__1eVAi", "selected": "datepicker_selected__S1Yg2", "today": "datepicker_today__1RBsT", "header": "datepicker_header__3Nx4g", "bymonth": "datepicker_bymonth__3D7BL" };
+var s$3 = { "sitcontrol": "datepicker_sitcontrol__MlvQI", "datepicker": "datepicker_datepicker__3yh6x", "caret": "datepicker_caret__2zRLa", "left": "datepicker_left__iAiHG", "right": "datepicker_right__543yF", "calendar": "datepicker_calendar__ZFo0k", "picker": "datepicker_picker__2yEN5", "angle": "datepicker_angle__3SzdO", "byday": "datepicker_byday__1eVAi", "selected": "datepicker_selected__S1Yg2", "today": "datepicker_today__1RBsT", "header": "datepicker_header__3Nx4g", "bymonth": "datepicker_bymonth__3D7BL" };
 styleInject(css$5);
 
 var DatePicker = function (_React$Component) {
@@ -1925,7 +1925,7 @@ var DatePicker = function (_React$Component) {
       for (var i = 0; i < _this.daysofweek.length; i++) {
         list.push(React.createElement(
           "li",
-          { className: s$2.header, key: i },
+          { className: s$3.header, key: i },
           _this.daysofweek[i]
         ));
       }
@@ -1937,7 +1937,7 @@ var DatePicker = function (_React$Component) {
         var today = _this.state.selectionYear === _this.today.getFullYear() && _this.state.selectionMonth === _this.today.getMonth() + 1 && _this.today.getDate() === _i2;
         list.push(React.createElement(
           "li",
-          { className: classnames(selected && s$2.selected, today && s$2.today), key: 14 + _i2, "data-value": _i2 },
+          { className: classnames(selected && s$3.selected, today && s$3.today), key: 14 + _i2, "data-value": _i2 },
           _i2
         ));
       }
@@ -1996,22 +1996,22 @@ var DatePicker = function (_React$Component) {
       Object.assign(style, this.props.style);
       return React.createElement(
         "div",
-        { className: s$2.datepicker, style: style },
-        React.createElement(FontAwesomeIcon, { className: classnames(s$2.caret, s$2.left), icon: "caret-left", onClick: function onClick(e) {
+        { className: s$3.datepicker, style: style },
+        React.createElement(FontAwesomeIcon, { className: classnames(s$3.caret, s$3.left), icon: "caret-left", onClick: function onClick(e) {
             return _this2.plusDay(-1);
           } }),
-        React.createElement(FontAwesomeIcon, { className: s$2.calendar, icon: "calendar-alt", onClick: this.show }),
-        React.createElement("input", { className: s$2.sitcontrol, ref: this.setInput, name: this.props.name, value: this.value, onChange: this.changeHandler, onKeyDown: this.keyHandler, onClick: this.changeHandler }),
-        React.createElement(FontAwesomeIcon, { className: classnames(s$2.caret, s$2.right), icon: "caret-right", onClick: function onClick(e) {
+        React.createElement(FontAwesomeIcon, { className: s$3.calendar, icon: "calendar-alt", onClick: this.show }),
+        React.createElement("input", { className: s$3.sitcontrol, ref: this.setInput, name: this.props.name, value: this.value, onChange: this.changeHandler, onKeyDown: this.keyHandler, onClick: this.changeHandler }),
+        React.createElement(FontAwesomeIcon, { className: classnames(s$3.caret, s$3.right), icon: "caret-right", onClick: function onClick(e) {
             return _this2.plusDay(1);
           } }),
         this.state.show && this.state.index === 0 && React.createElement(
           "div",
-          { className: classnames(s$2.picker, s$2.byday) },
+          { className: classnames(s$3.picker, s$3.byday) },
           React.createElement(
             "div",
             null,
-            React.createElement(FontAwesomeIcon, { className: classnames(s$2.angle, s$2.left), icon: "angle-left", onClick: function onClick(e) {
+            React.createElement(FontAwesomeIcon, { className: classnames(s$3.angle, s$3.left), icon: "angle-left", onClick: function onClick(e) {
                 return _this2.plusMonth(-1);
               } }),
             React.createElement(
@@ -2019,7 +2019,7 @@ var DatePicker = function (_React$Component) {
               { onClick: this.showMonths },
               this.months[this.state.selectionMonth - 1] + " " + this.state.selectionYear
             ),
-            React.createElement(FontAwesomeIcon, { className: classnames(s$2.angle, s$2.right), icon: "angle-right", onClick: function onClick(e) {
+            React.createElement(FontAwesomeIcon, { className: classnames(s$3.angle, s$3.right), icon: "angle-right", onClick: function onClick(e) {
                 return _this2.plusMonth(1);
               } })
           ),
@@ -2032,15 +2032,15 @@ var DatePicker = function (_React$Component) {
         ),
         this.state.show && this.state.index === 1 && React.createElement(
           "div",
-          { className: classnames(s$2.picker, s$2.bymonth) },
+          { className: classnames(s$3.picker, s$3.bymonth) },
           React.createElement(
             "div",
             null,
-            React.createElement(FontAwesomeIcon, { className: classnames(s$2.angle, s$2.left), icon: "angle-left", onClick: function onClick(e) {
+            React.createElement(FontAwesomeIcon, { className: classnames(s$3.angle, s$3.left), icon: "angle-left", onClick: function onClick(e) {
                 return _this2.plusYear(-1);
               } }),
             this.state.selectionYear,
-            React.createElement(FontAwesomeIcon, { className: classnames(s$2.angle, s$2.right), icon: "angle-right", onClick: function onClick(e) {
+            React.createElement(FontAwesomeIcon, { className: classnames(s$3.angle, s$3.right), icon: "angle-right", onClick: function onClick(e) {
                 return _this2.plusYear(1);
               } })
           ),
@@ -2050,7 +2050,7 @@ var DatePicker = function (_React$Component) {
             this.months.map(function (y, i) {
               return React.createElement(
                 "li",
-                { className: _this2.state.month === i + 1 && _this2.state.selectionYear === _this2.state.year ? s$2.selected : undefined, "data-value": i + 1, key: i },
+                { className: _this2.state.month === i + 1 && _this2.state.selectionYear === _this2.state.year ? s$3.selected : undefined, "data-value": i + 1, key: i },
                 y.substring(0, 3)
               );
             }),
@@ -2196,6 +2196,129 @@ DatePicker.propTypes = {
   onChange: PropTypes.func
 };
 
+var select_counter = 0;
+
+var Select = function (_React$Component) {
+  inherits(Select, _React$Component);
+
+  function Select(props) {
+    classCallCheck$1(this, Select);
+
+    var _this = possibleConstructorReturn(this, (Select.__proto__ || Object.getPrototypeOf(Select)).call(this, props));
+
+    _this.changeHandler = function (e) {
+      var oldValue = _this.state.value;
+      var newValue = _this.readOnly ? oldValue : e.target.value;
+      _this.setState({ value: newValue }, _this.changeTrigger(oldValue, newValue));
+    };
+
+    _this.state = { value: props.defaultValue };
+    _this.valueFunc = function (o) {
+      return o[props.valueField];
+    };
+    _this.labelFunc = function (o) {
+      return o[props.labelField];
+    };
+    if (props.valueFunc) _this.valueFunc = props.valueFunc;
+    if (props.labelFunc) _this.labelFunc = props.labelFunc;
+    _this.select = null;
+    _this.onChange = props.onChange;
+    _this.id = "sitselect" + ++select_counter;
+    return _this;
+  }
+
+  createClass$1(Select, [{
+    key: "changeTrigger",
+    value: function changeTrigger(oldValue, newValue) {
+      if (this.onChange !== undefined && oldValue !== newValue) this.onChange({ target: this, oldValue: oldValue, newValue: newValue });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var _props = this.props,
+          id = _props.id,
+          options = _props.options,
+          defaultValue = _props.defaultValue,
+          value = _props.value,
+          readOnly = _props.readOnly,
+          className = _props.className,
+          labelField = _props.labelField,
+          valueField = _props.valueField,
+          labelFunc = _props.labelFunc,
+          valueFunc = _props.valueFunc,
+          onChange = _props.onChange,
+          style = _props.style,
+          width = _props.width,
+          newprops = objectWithoutProperties$1(_props, ["id", "options", "defaultValue", "value", "readOnly", "className", "labelField", "valueField", "labelFunc", "valueFunc", "onChange", "style", "width"]);
+
+      style = _extends$2({ width: width }, style);
+      this.readOnly = readOnly;
+      this.options = options;
+      this.onChange = onChange;
+      id = id || this.id;
+      return React.createElement(
+        "select",
+        _extends$2({ ref: function ref(s) {
+            return _this2.select = s;
+          }, id: id, className: className || s$1.sitcontrol, value: this.state.value, readOnly: readOnly, style: style, onChange: this.changeHandler }, newprops),
+        options.map(function (o, i) {
+          var val = _this2.valueFunc(o, i);
+          return React.createElement(
+            "option",
+            { value: val, key: val, "data-index": i },
+            _this2.labelFunc(o, i)
+          );
+        }),
+        this.props.children
+      );
+    }
+  }, {
+    key: "value",
+    get: function get$$1() {
+      return this.select.value;
+    },
+    set: function set$$1(val) {
+      this.setState({ value: val });
+    }
+  }, {
+    key: "selectedItem",
+    get: function get$$1() {
+      var _this3 = this;
+
+      var x = this.options.filter(function (o) {
+        return _this3.valueFunc(o) === _this3.state.value;
+      });
+      if (x.length === 0) return this.options[0];else return x[0];
+    },
+    set: function set$$1(obj) {
+      this.value = obj[this.valueField];
+    }
+  }]);
+  return Select;
+}(React.Component);
+
+Select.defaultProps = {
+  defaultValue: "",
+  readOnly: false,
+  labelField: "label",
+  valueField: "value",
+  onChange: function onChange() {},
+  style: {}
+};
+Select.propTypes = {
+  value: PropTypes.string,
+  defaultValue: PropTypes.string,
+  readOnly: PropTypes.bool,
+  onChange: PropTypes.func,
+  labelField: PropTypes.string,
+  valueField: PropTypes.string,
+  labelFunc: PropTypes.func,
+  valueFunc: PropTypes.func,
+  style: PropTypes.object
+};
+
 /*!
  * Font Awesome Free 5.2.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
@@ -2214,6 +2337,7 @@ exports.Input = Input;
 exports.InputBox = InputBox;
 exports.InputOption = InputOption;
 exports.DatePicker = DatePicker;
+exports.Select = Select;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
