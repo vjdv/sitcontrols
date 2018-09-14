@@ -1653,7 +1653,7 @@ var css$3 = ".inputbox_sitbox__21ei6 label {\n  display: inline-block;\n  margin
 var s$2 = { "sitbox": "inputbox_sitbox__21ei6" };
 styleInject(css$3);
 
-var counter$1;
+var counter$1 = 0;
 function InputBox(props) {
   var id = props.id,
       label = props.label,
@@ -2314,7 +2314,7 @@ Select.propTypes = {
   style: PropTypes.object
 };
 
-var counter$2;
+var counter$2 = 0;
 function SelectBox(props) {
   var id = props.id,
       label = props.label,

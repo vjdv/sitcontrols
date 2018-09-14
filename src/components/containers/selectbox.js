@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import cx from "classnames";
 import s from "./inputbox.scss";
 
-var counter;
+var counter = 0;
 function SelectBox(props) {
   var { id, label, loading, className, ref, ...sprops } = props;
   id = id || `sitselectbox${++counter}`;
