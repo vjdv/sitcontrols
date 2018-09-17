@@ -1384,6 +1384,64 @@ FontAwesomeIcon.defaultProps = {
 
 var convertCurry = convert.bind(null, React.createElement);
 
+function createCommonjsModule$1(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var classnames = createCommonjsModule$1(function (module) {
+/*!
+  Copyright (c) 2017 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg) && arg.length) {
+				var inner = classNames.apply(null, arg);
+				if (inner) {
+					classes.push(inner);
+				}
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if ('object' !== 'undefined' && module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else if (typeof undefined === 'function' && typeof undefined.amd === 'object' && undefined.amd) {
+		// register as 'classnames', consistent with npm package name
+		undefined('classnames', [], function () {
+			return classNames;
+		});
+	} else {
+		window.classNames = classNames;
+	}
+}());
+});
+
 function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
@@ -1411,8 +1469,8 @@ function styleInject(css, ref) {
   }
 }
 
-var css$1 = ".button_sitcontrolbtn__3U7_H {\n  margin: 0;\n  font-family: inherit;\n  font-size: inherit;\n  line-height: inherit;\n  display: inline-block;\n  font-weight: 400;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  user-select: none;\n  border: 1px solid transparent;\n  padding: 0.375rem 0.75rem;\n  font-size: 1rem;\n  line-height: 1.5;\n  border-radius: 0.25rem;\n  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  color: #fff;\n  background-color: #6c757d;\n  border-color: #6c757d; }\n  .button_sitcontrolbtn__3U7_H:not(:disabled) {\n    cursor: pointer; }\n  .button_sitcontrolbtn__3U7_H:disabled, .button_sitcontrolbtn__3U7_H.button_disabled__3wXoK {\n    color: #fff;\n    background-color: #6c757d;\n    border-color: #6c757d;\n    opacity: 0.8; }\n    .button_sitcontrolbtn__3U7_H:disabled:hover, .button_sitcontrolbtn__3U7_H.button_disabled__3wXoK:hover {\n      color: #fff;\n      background-color: #6c757d;\n      border-color: #6c757d; }\n  .button_sitcontrolbtn__3U7_H:hover {\n    color: #fff;\n    background-color: #5a6268;\n    border-color: #545b62;\n    text-decoration: none; }\n  .button_sitcontrolbtn__3U7_H.button_focus__qXHFb, .button_sitcontrolbtn__3U7_H:focus {\n    outline: 0;\n    text-decoration: none;\n    box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5); }\n";
-var s = { "sitcontrolbtn": "button_sitcontrolbtn__3U7_H", "disabled": "button_disabled__3wXoK", "focus": "button_focus__qXHFb" };
+var css$1 = ".button_sitcontrolbtn__3U7_H {\n  margin: 0;\n  font-family: inherit;\n  font-size: inherit;\n  line-height: inherit;\n  display: inline-block;\n  font-weight: 400;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  user-select: none;\n  border: 1px solid transparent;\n  padding: 0.375rem 0.75rem;\n  font-size: 1rem;\n  line-height: 1.5;\n  border-radius: 0.25rem;\n  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  color: #fff; }\n  .button_sitcontrolbtn__3U7_H:not(:disabled) {\n    cursor: pointer; }\n  .button_sitcontrolbtn__3U7_H:hover {\n    color: #fff;\n    text-decoration: none; }\n  .button_sitcontrolbtn__3U7_H:disabled {\n    color: #fff;\n    opacity: 0.7; }\n  .button_sitcontrolbtn__3U7_H:focus {\n    outline: 0;\n    text-decoration: none; }\n  .button_sitcontrolbtn__3U7_H.button_primary__-u8iu {\n    background-color: #007bff;\n    border-color: #007bff; }\n    .button_sitcontrolbtn__3U7_H.button_primary__-u8iu:hover {\n      background-color: #0069d9;\n      border-color: #0062cc; }\n    .button_sitcontrolbtn__3U7_H.button_primary__-u8iu:focus {\n      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); }\n    .button_sitcontrolbtn__3U7_H.button_primary__-u8iu:disabled {\n      background-color: #007bff;\n      border-color: #007bff; }\n  .button_sitcontrolbtn__3U7_H.button_secondary__TIaR_ {\n    background-color: #6c757d;\n    border-color: #6c757d; }\n    .button_sitcontrolbtn__3U7_H.button_secondary__TIaR_:hover {\n      background-color: #5a6268;\n      border-color: #545b62; }\n    .button_sitcontrolbtn__3U7_H.button_secondary__TIaR_:focus {\n      box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.5); }\n    .button_sitcontrolbtn__3U7_H.button_secondary__TIaR_:disabled {\n      background-color: #6c757d;\n      border-color: #6c757d; }\n  .button_sitcontrolbtn__3U7_H.button_success__2-a4z {\n    background-color: #28a745;\n    border-color: #28a745; }\n    .button_sitcontrolbtn__3U7_H.button_success__2-a4z:hover {\n      background-color: #218838;\n      border-color: #1e7e34; }\n    .button_sitcontrolbtn__3U7_H.button_success__2-a4z:focus {\n      box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5); }\n    .button_sitcontrolbtn__3U7_H.button_success__2-a4z:disabled {\n      background-color: #28a745;\n      border-color: #28a745; }\n  .button_sitcontrolbtn__3U7_H.button_danger__C5jrw {\n    background-color: #dc3545;\n    border-color: #dc3545; }\n    .button_sitcontrolbtn__3U7_H.button_danger__C5jrw:hover {\n      background-color: #c82333;\n      border-color: #bd2130; }\n    .button_sitcontrolbtn__3U7_H.button_danger__C5jrw:focus {\n      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5); }\n    .button_sitcontrolbtn__3U7_H.button_danger__C5jrw:disabled {\n      background-color: #dc3545;\n      border-color: #dc3545; }\n  .button_sitcontrolbtn__3U7_H.button_warning__3-7xm {\n    color: #212529;\n    background-color: #ffc107;\n    border-color: #ffc107; }\n    .button_sitcontrolbtn__3U7_H.button_warning__3-7xm:hover {\n      background-color: #e0a800;\n      border-color: #d39e00; }\n    .button_sitcontrolbtn__3U7_H.button_warning__3-7xm:focus {\n      box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5); }\n    .button_sitcontrolbtn__3U7_H.button_warning__3-7xm:disabled {\n      background-color: #ffc107;\n      border-color: #ffc107; }\n  .button_sitcontrolbtn__3U7_H.button_info__3czVn {\n    background-color: #17a2b8;\n    border-color: #17a2b8; }\n    .button_sitcontrolbtn__3U7_H.button_info__3czVn:hover {\n      background-color: #138496;\n      border-color: #117a8b; }\n    .button_sitcontrolbtn__3U7_H.button_info__3czVn:focus {\n      box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.5); }\n    .button_sitcontrolbtn__3U7_H.button_info__3czVn:disabled {\n      background-color: #17a2b8;\n      border-color: #17a2b8; }\n  .button_sitcontrolbtn__3U7_H.button_light__3SexT {\n    color: #212529;\n    background-color: #f8f9fa;\n    border-color: #f8f9fa; }\n    .button_sitcontrolbtn__3U7_H.button_light__3SexT:hover {\n      background-color: #e2e6ea;\n      border-color: #dae0e5; }\n    .button_sitcontrolbtn__3U7_H.button_light__3SexT:focus {\n      box-shadow: 0 0 0 0.2rem rgba(248, 249, 250, 0.5); }\n    .button_sitcontrolbtn__3U7_H.button_light__3SexT:disabled {\n      background-color: #f8f9fa;\n      border-color: #f8f9fa; }\n  .button_sitcontrolbtn__3U7_H.button_dark__1Glmk {\n    background-color: #343a40;\n    border-color: #343a40; }\n    .button_sitcontrolbtn__3U7_H.button_dark__1Glmk:hover {\n      background-color: #23272b;\n      border-color: #1d2124; }\n    .button_sitcontrolbtn__3U7_H.button_dark__1Glmk:focus {\n      box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.5); }\n    .button_sitcontrolbtn__3U7_H.button_dark__1Glmk:disabled {\n      background-color: #343a40;\n      border-color: #343a40; }\n  .button_sitcontrolbtn__3U7_H.button_link__3_nMs {\n    font-weight: 400;\n    color: #007bff;\n    background-color: transparent; }\n    .button_sitcontrolbtn__3U7_H.button_link__3_nMs:hover {\n      color: #0056b3;\n      text-decoration: underline;\n      background-color: transparent;\n      border-color: transparent; }\n    .button_sitcontrolbtn__3U7_H.button_link__3_nMs:focus {\n      text-decoration: underline;\n      border-color: transparent;\n      box-shadow: none; }\n    .button_sitcontrolbtn__3U7_H.button_link__3_nMs:disabled {\n      color: #007bff;\n      background-color: transparent; }\n";
+var s = { "sitcontrolbtn": "button_sitcontrolbtn__3U7_H", "primary": "button_primary__-u8iu", "secondary": "button_secondary__TIaR_", "success": "button_success__2-a4z", "danger": "button_danger__C5jrw", "warning": "button_warning__3-7xm", "info": "button_info__3czVn", "light": "button_light__3SexT", "dark": "button_dark__1Glmk", "link": "button_link__3_nMs" };
 styleInject(css$1);
 
 var classCallCheck$1 = function (instance, Constructor) {
@@ -1489,6 +1547,8 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
+var variants = { primary: s.primary, secondary: s.secondary, success: s.success, danger: s.danger, warning: s.warning, info: s.info, light: s.light, dark: s.dark, link: s.link };
+
 function Button(props) {
   var label = props.label,
       icon = props.icon,
@@ -1500,7 +1560,7 @@ function Button(props) {
   var content = label || children;
   return React.createElement(
     "button",
-    _extends$2({ className: s.sitcontrolbtn }, newprops),
+    _extends$2({ className: classnames(s.sitcontrolbtn, variants[props.variant]) }, newprops),
     loading && React.createElement(FontAwesomeIcon, { className: "fa-pulse", icon: "spinner" }),
     !loading && icon ? React.createElement(FontAwesomeIcon, { icon: icon }) : undefined,
     !loading && classIcon ? React.createElement("span", { className: classIcon }) : undefined,
@@ -1513,11 +1573,13 @@ Button.propTypes = {
   label: PropTypes.string,
   icon: PropTypes.string,
   classIcon: PropTypes.string,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  variant: PropTypes.string
 };
 
 Button.defaultProps = {
-  loading: false
+  loading: false,
+  variant: "primary"
 };
 
 var css$2 = ".input_sitcontrol__2l-qC {\n  display: block;\n  width: 100%;\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid #ced4da;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  overflow: visible;\n  margin: 0;\n  font-family: inherit;\n  box-sizing: border-box; }\n  .input_sitcontrol__2l-qC:focus {\n    color: #495057;\n    background-color: #fff;\n    border-color: #80bdff;\n    outline: 0;\n    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }\n  .input_sitcontrol__2l-qC:disabled, .input_sitcontrol__2l-qC[readonly] {\n    background-color: #e9ecef;\n    opacity: 1; }\n";
@@ -1596,64 +1658,6 @@ Input.propTypes = {
   format: PropTypes.string,
   onChange: PropTypes.func
 };
-
-function createCommonjsModule$1(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-var classnames = createCommonjsModule$1(function (module) {
-/*!
-  Copyright (c) 2017 Jed Watson.
-  Licensed under the MIT License (MIT), see
-  http://jedwatson.github.io/classnames
-*/
-/* global define */
-
-(function () {
-
-	var hasOwn = {}.hasOwnProperty;
-
-	function classNames () {
-		var classes = [];
-
-		for (var i = 0; i < arguments.length; i++) {
-			var arg = arguments[i];
-			if (!arg) continue;
-
-			var argType = typeof arg;
-
-			if (argType === 'string' || argType === 'number') {
-				classes.push(arg);
-			} else if (Array.isArray(arg) && arg.length) {
-				var inner = classNames.apply(null, arg);
-				if (inner) {
-					classes.push(inner);
-				}
-			} else if (argType === 'object') {
-				for (var key in arg) {
-					if (hasOwn.call(arg, key) && arg[key]) {
-						classes.push(key);
-					}
-				}
-			}
-		}
-
-		return classes.join(' ');
-	}
-
-	if ('object' !== 'undefined' && module.exports) {
-		classNames.default = classNames;
-		module.exports = classNames;
-	} else if (typeof undefined === 'function' && typeof undefined.amd === 'object' && undefined.amd) {
-		// register as 'classnames', consistent with npm package name
-		undefined('classnames', [], function () {
-			return classNames;
-		});
-	} else {
-		window.classNames = classNames;
-	}
-}());
-});
 
 var css$3 = ".inputbox_sitbox__21ei6 label {\n  display: inline-block;\n  margin: 0.4rem 0 0.2rem 0;\n  width: 100%; }\n";
 var s$2 = { "sitbox": "inputbox_sitbox__21ei6" };
