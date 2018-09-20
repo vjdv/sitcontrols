@@ -2358,6 +2358,83 @@ SelectBox.defaultProps = {
   loading: false
 };
 
+var css$6 = ".checkbox_sitcheck__ZLw9D {\n  position: relative; }\n  .checkbox_sitcheck__ZLw9D input {\n    position: absolute;\n    z-index: -1;\n    opacity: 0; }\n  .checkbox_sitcheck__ZLw9D label {\n    margin-left: 0.4rem; }\n    .checkbox_sitcheck__ZLw9D label:before {\n      position: absolute;\n      top: 0.25rem;\n      left: 0;\n      display: block;\n      width: 1rem;\n      height: 1rem;\n      pointer-events: none;\n      content: \"\"; }\n  .checkbox_sitcheck__ZLw9D input:focus ~ label::before {\n    box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }\n  .checkbox_sitcheck__ZLw9D .checkbox_siticon__m28wS {\n    color: #007bff; }\n  .checkbox_sitcheck__ZLw9D.checkbox_disabled__-qPIA {\n    color: #444; }\n    .checkbox_sitcheck__ZLw9D.checkbox_disabled__-qPIA .checkbox_siticon__m28wS {\n      color: #777; }\n";
+var s$4 = { "sitcheck": "checkbox_sitcheck__ZLw9D", "siticon": "checkbox_siticon__m28wS", "disabled": "checkbox_disabled__-qPIA" };
+styleInject(css$6);
+
+var counter$3 = 0;
+
+var CheckBox = function (_React$Component) {
+  inherits(CheckBox, _React$Component);
+
+  function CheckBox(props) {
+    classCallCheck$1(this, CheckBox);
+
+    var _this = possibleConstructorReturn(this, (CheckBox.__proto__ || Object.getPrototypeOf(CheckBox)).call(this, props));
+
+    _this.changeHandler = function (e) {
+      var oldChecked = _this.state.checked;
+      var newChecked = !oldChecked;
+      if (_this.props.readOnly) _this.setState({ checked: oldChecked });else {
+        _this.setState({ checked: newChecked }, function () {
+          if (_this.props.onChange) _this.props.onChange({ target: _this, oldChecked: oldChecked, newChecked: newChecked });
+        });
+      }
+    };
+
+    _this.state = { checked: props.defaultChecked };
+    _this.id = props.id || "sitcheckbox" + ++counter$3;
+    return _this;
+  }
+
+  createClass$1(CheckBox, [{
+    key: "render",
+    value: function render() {
+      var _props = this.props,
+          label = _props.label,
+          readOnly = _props.readOnly,
+          disabled = _props.disabled,
+          checked = _props.checked,
+          defaultChecked = _props.defaultChecked,
+          checkColor = _props.checkColor,
+          xprops = objectWithoutProperties$1(_props, ["label", "readOnly", "disabled", "checked", "defaultChecked", "checkColor"]);
+
+      checked = this.state.checked;
+      return React.createElement(
+        "div",
+        { className: classnames(s$4.sitcheck, readOnly || disabled ? s$4.disabled : undefined) },
+        React.createElement(FontAwesomeIcon, { icon: { prefix: checked ? "fas" : "far", iconName: checked ? "check-circle" : "circle" }, className: s$4.siticon }),
+        React.createElement("input", _extends$2({ type: "checkbox", onChange: this.changeHandler, id: this.id, checked: this.state.checked }, xprops)),
+        React.createElement(
+          "label",
+          { className: "custom-control-label", htmlFor: this.id },
+          label
+        )
+      );
+    }
+  }, {
+    key: "checked",
+    get: function get$$1() {
+      return this.state.checked;
+    },
+    set: function set$$1(val) {
+      this.setState({ checked: val });
+    }
+  }]);
+  return CheckBox;
+}(React.Component);
+
+CheckBox.defaultProps = {
+  defaultChecked: false,
+  readOnly: false
+};
+CheckBox.propTypes = {
+  label: PropTypes.string.isRequired,
+  defaultChecked: PropTypes.bool,
+  checked: PropTypes.bool,
+  readOnly: PropTypes.bool
+};
+
 /*!
  * Font Awesome Free 5.2.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
@@ -2367,9 +2444,16 @@ var faAngleRight = { prefix: 'fas', iconName: 'angle-right', icon: [256, 512, []
 var faCalendarAlt = { prefix: 'fas', iconName: 'calendar-alt', icon: [448, 512, [], "f073", "M436 160H12c-6.6 0-12-5.4-12-12v-36c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48v36c0 6.6-5.4 12-12 12zM12 192h424c6.6 0 12 5.4 12 12v260c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V204c0-6.6 5.4-12 12-12zm116 204c0-6.6-5.4-12-12-12H76c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12v-40zm0-128c0-6.6-5.4-12-12-12H76c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12v-40zm128 128c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12v-40zm0-128c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12v-40zm128 128c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12v-40zm0-128c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12v-40z"] };
 var faCaretLeft = { prefix: 'fas', iconName: 'caret-left', icon: [192, 512, [], "f0d9", "M192 127.338v257.324c0 17.818-21.543 26.741-34.142 14.142L29.196 270.142c-7.81-7.81-7.81-20.474 0-28.284l128.662-128.662c12.599-12.6 34.142-3.676 34.142 14.142z"] };
 var faCaretRight = { prefix: 'fas', iconName: 'caret-right', icon: [192, 512, [], "f0da", "M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z"] };
+var faCheckCircle = { prefix: 'fas', iconName: 'check-circle', icon: [512, 512, [], "f058", "M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"] };
 var faSpinner = { prefix: 'fas', iconName: 'spinner', icon: [512, 512, [], "f110", "M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z"] };
 
-library.add(faSpinner, faCaretLeft, faCaretRight, faAngleLeft, faAngleRight, faCalendarAlt);
+/*!
+ * Font Awesome Free 5.3.1 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
+var faCircle$1 = { prefix: 'far', iconName: 'circle', icon: [512, 512, [], "f111", "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200z"] };
+
+library.add(faSpinner, faCaretLeft, faCaretRight, faAngleLeft, faAngleRight, faCalendarAlt, faCircle$1, faCheckCircle);
 
 exports.Button = Button;
 exports.Input = Input;
@@ -2378,6 +2462,7 @@ exports.InputOption = InputOption;
 exports.DatePicker = DatePicker;
 exports.Select = Select;
 exports.SelectBox = SelectBox;
+exports.CheckBox = CheckBox;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
