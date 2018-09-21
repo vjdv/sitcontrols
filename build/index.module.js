@@ -1576,8 +1576,8 @@ Button.defaultProps = {
   variant: "primary"
 };
 
-var css$2 = ".input_sitcontrol__2l-qC {\n  display: block;\n  width: 100%;\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid #ced4da;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  overflow: visible;\n  margin: 0;\n  font-family: inherit;\n  box-sizing: border-box; }\n  .input_sitcontrol__2l-qC:focus {\n    color: #495057;\n    background-color: #fff;\n    border-color: #80bdff;\n    outline: 0;\n    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }\n  .input_sitcontrol__2l-qC:disabled, .input_sitcontrol__2l-qC[readonly] {\n    background-color: #e9ecef;\n    opacity: 1; }\n";
-var s$1 = { "sitcontrol": "input_sitcontrol__2l-qC" };
+var css$2 = ".input_sitcontrol__2l-qC {\n  display: block;\n  width: 100%;\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid #ced4da;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  overflow: visible;\n  margin: 0;\n  font-family: inherit;\n  box-sizing: border-box; }\n  .input_sitcontrol__2l-qC:focus {\n    color: #495057;\n    background-color: #fff;\n    border-color: #80bdff;\n    outline: 0;\n    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }\n  .input_sitcontrol__2l-qC:disabled, .input_sitcontrol__2l-qC[readonly] {\n    background-color: #e9ecef;\n    opacity: 1; }\n  .input_sitcontrol__2l-qC.input_ralign__1bTIH {\n    text-align: right; }\n";
+var s$1 = { "sitcontrol": "input_sitcontrol__2l-qC", "ralign": "input_ralign__1bTIH" };
 styleInject(css$2);
 
 var input_counter = 0;
@@ -1687,6 +1687,150 @@ InputBox.propTypes = {
 };
 
 InputBox.defaultProps = {
+  loading: false
+};
+
+var counter$2 = 0;
+
+var NumberInput = function (_React$Component) {
+  inherits(NumberInput, _React$Component);
+
+  function NumberInput(props) {
+    classCallCheck$1(this, NumberInput);
+
+    var _this = possibleConstructorReturn(this, (NumberInput.__proto__ || Object.getPrototypeOf(NumberInput)).call(this, props));
+
+    _this.formatNumber = function (number, n, x) {
+      var re = "\\d(?=(\\d{" + (x || 3) + "})+" + (n > 0 ? "\\." : "$") + ")";
+      return number.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, "g"), "$&,");
+    };
+
+    _this.changeHandler = function (e) {
+      var val1 = e.target.value;
+      var val2 = val1.replace(/[^0-9.]/g, "");
+      if (val1.charAt(0) === "-") val2 = "-" + val2;
+      _this.setState({ text: _this.parseString(val2) });
+    };
+
+    _this.focused = function () {
+      var decimals = _this.state.value % 1 === 0 ? 0 : _this.props.decimals;
+      _this.setState({ focused: true, text: _this.formatNumber(_this.state.value, decimals) });
+    };
+
+    _this.blurred = function () {
+      var text = _this.state.text;
+      text = text.replace(/[^0-9.]/g, "");
+      if (_this.state.text.charAt(0) === "-") text = "-" + text;
+      _this.setState({ focused: false, value: Number(text) });
+    };
+
+    var value = props.defaultValue;
+    if (typeof value !== "number") value = Number(value);
+    _this.state = { value: value };
+    _this.id = "sitnuminp" + ++counter$2;
+    return _this;
+  }
+
+  createClass$1(NumberInput, [{
+    key: "parseString",
+    value: function parseString(str) {
+      var parts = str.split(".");
+      if (str === "" || str === "-") return str;else if (this.props.decimals === 0 || parts.length === 1) return this.formatNumber(Number(parts[0]));else if (parts[1] === "") return this.formatNumber(Number(parts[0])) + ".";else {
+        if (parts[1].length > this.props.decimals) parts[1] = parts[1].substring(0, this.props.decimals);
+        return this.formatNumber(Number(parts[0])) + "." + parts[1];
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var _props = this.props,
+          id = _props.id,
+          value = _props.value,
+          defaultValue = _props.defaultValue,
+          onChange = _props.onChange,
+          accept = _props.accept,
+          xprops = objectWithoutProperties$1(_props, ["id", "value", "defaultValue", "onChange", "accept"]);
+
+      if (value !== undefined) {
+        if (typeof value !== "number") value = Number(value);
+        if (isNaN(value)) value = 0;
+        this.state.value = value;
+      }
+      return React.createElement("input", _extends$2({
+        ref: function ref(o) {
+          return _this2.input = o;
+        },
+        className: classnames(s$1.sitcontrol, s$1.ralign),
+        id: id || this.id,
+        value: this.text,
+        onChange: this.changeHandler,
+        onFocus: this.focused,
+        onBlur: this.blurred
+      }, xprops));
+    }
+  }, {
+    key: "value",
+    get: function get$$1() {
+      return this.state.value;
+    },
+    set: function set$$1(val) {
+      this.setState({ value: val });
+    }
+  }, {
+    key: "text",
+    get: function get$$1() {
+      return this.state.focused ? this.state.text : this.props.prefix + this.formatNumber(this.state.value, this.props.decimals) + this.props.suffix;
+    }
+  }]);
+  return NumberInput;
+}(React.Component);
+
+
+NumberInput.defaultProps = {
+  defaultValue: 0,
+  prefix: "",
+  suffix: "",
+  decimals: 0,
+  onChange: function onChange() {}
+};
+NumberInput.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onChange: PropTypes.func
+};
+
+var counter$3 = 0;
+function NumberInputBox(props) {
+  var id = props.id,
+      label = props.label,
+      loading = props.loading,
+      ref = props.ref,
+      iprops = objectWithoutProperties$1(props, ["id", "label", "loading", "ref"]);
+
+  id = id || "sitcontrolbox" + ++counter$3;
+  return React.createElement(
+    "div",
+    { className: classnames(s$2.sitbox) },
+    React.createElement(
+      "label",
+      { htmlFor: id || this.id },
+      loading && React.createElement(FontAwesomeIcon, { className: "fa-pulse", icon: "spinner" }),
+      loading && " ",
+      label
+    ),
+    React.createElement(NumberInput, _extends$2({ ref: ref, id: id || this.id }, iprops))
+  );
+}
+
+NumberInputBox.propTypes = {
+  label: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  loading: PropTypes.bool
+};
+
+NumberInputBox.defaultProps = {
   loading: false
 };
 
@@ -1867,8 +2011,8 @@ var InputOption = function (_React$Component) {
   return InputOption;
 }(React.Component);
 
-var css$5 = ".datepicker_sitcontrol__MlvQI {\n  display: block;\n  width: 100%;\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid #ced4da;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  overflow: visible;\n  margin: 0;\n  font-family: inherit;\n  box-sizing: border-box; }\n  .datepicker_sitcontrol__MlvQI:focus {\n    color: #495057;\n    background-color: #fff;\n    border-color: #80bdff;\n    outline: 0;\n    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }\n  .datepicker_sitcontrol__MlvQI:disabled, .datepicker_sitcontrol__MlvQI[readonly] {\n    background-color: #e9ecef;\n    opacity: 1; }\n\n.datepicker_datepicker__3yh6x {\n  display: block;\n  width: 100%;\n  background-color: #fff;\n  position: relative;\n  user-select: none; }\n  .datepicker_datepicker__3yh6x > .datepicker_sitcontrol__MlvQI {\n    padding-left: 1rem;\n    padding-right: 2.5rem;\n    text-align: center;\n    color: #787b7d; }\n  .datepicker_datepicker__3yh6x .datepicker_caret__2zRLa {\n    position: absolute;\n    top: 0.5rem;\n    color: #bbb;\n    padding: 0 0.2rem;\n    box-sizing: content-box; }\n    .datepicker_datepicker__3yh6x .datepicker_caret__2zRLa.datepicker_left__iAiHG {\n      left: 0.2rem; }\n    .datepicker_datepicker__3yh6x .datepicker_caret__2zRLa.datepicker_right__543yF {\n      right: 1.5rem; }\n  .datepicker_datepicker__3yh6x > .datepicker_calendar__ZFo0k {\n    position: absolute;\n    top: 0.5rem;\n    right: 0.3rem;\n    color: #787b7d; }\n  .datepicker_datepicker__3yh6x:hover .datepicker_caret__2zRLa {\n    color: #787b7d; }\n    .datepicker_datepicker__3yh6x:hover .datepicker_caret__2zRLa:hover {\n      color: #111; }\n  .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 {\n    position: absolute;\n    top: 30px;\n    z-index: 100;\n    background-color: rgba(255, 255, 255, 0.96);\n    border: 1px solid #ccc;\n    box-shadow: 0 1px 5px #ddd;\n    border-radius: 7px;\n    padding: 10px;\n    box-sizing: border-box; }\n    .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div {\n      font-size: 1rem;\n      position: relative;\n      text-align: center;\n      font-weight: bold; }\n      .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div .datepicker_angle__3SzdO {\n        font-style: normal;\n        text-align: center;\n        width: 1.4rem;\n        height: 1.4rem;\n        position: absolute;\n        top: 0;\n        cursor: pointer;\n        border-radius: 50%; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div .datepicker_angle__3SzdO:hover {\n          background-color: rgba(255, 227, 160, 0.59); }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div .datepicker_angle__3SzdO.datepicker_left__iAiHG {\n          left: 0; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div .datepicker_angle__3SzdO.datepicker_right__543yF {\n          right: 0; }\n    .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul {\n      width: 182px;\n      font-size: 0;\n      padding: 5px 0 0 0;\n      box-sizing: border-box; }\n      .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li {\n        font-size: 0.9rem;\n        line-height: 0.9rem;\n        display: block;\n        border-radius: 7px;\n        width: 26px;\n        height: 1.15rem;\n        padding: 0.125rem 0.25rem;\n        float: left;\n        text-align: center;\n        box-sizing: border-box;\n        transition: background-color ease-in-out 300ms; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li:hover {\n          background-color: rgba(255, 227, 160, 0.59);\n          cursor: pointer; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li.datepicker_selected__S1Yg2 {\n          background-color: rgba(31, 42, 58, 0.73);\n          color: #fff; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li.datepicker_today__1RBsT {\n          border: 1px #1c5ec9 solid; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li.datepicker_header__3Nx4g {\n          font-size: 0.7rem;\n          padding: 0;\n          font-weight: bold;\n          height: 1rem;\n          background-color: transparent;\n          cursor: default; }\n    .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_bymonth__3D7BL > ul {\n      width: 180px;\n      font-size: 0;\n      padding: 5px 0 0 0;\n      box-sizing: border-box; }\n      .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_bymonth__3D7BL > ul li {\n        font-size: 1rem;\n        display: block;\n        border-radius: 7px;\n        width: 60px;\n        height: 35px;\n        padding: 5px;\n        float: left;\n        text-align: center;\n        box-sizing: border-box;\n        transition: background-color ease-in-out 300ms; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_bymonth__3D7BL > ul li:hover {\n          background-color: rgba(255, 227, 160, 0.59);\n          cursor: pointer; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_bymonth__3D7BL > ul li.datepicker_selected__S1Yg2 {\n          background-color: rgba(31, 42, 58, 0.73);\n          color: #fff; }\n";
-var s$3 = { "sitcontrol": "datepicker_sitcontrol__MlvQI", "datepicker": "datepicker_datepicker__3yh6x", "caret": "datepicker_caret__2zRLa", "left": "datepicker_left__iAiHG", "right": "datepicker_right__543yF", "calendar": "datepicker_calendar__ZFo0k", "picker": "datepicker_picker__2yEN5", "angle": "datepicker_angle__3SzdO", "byday": "datepicker_byday__1eVAi", "selected": "datepicker_selected__S1Yg2", "today": "datepicker_today__1RBsT", "header": "datepicker_header__3Nx4g", "bymonth": "datepicker_bymonth__3D7BL" };
+var css$5 = ".datepicker_sitcontrol__MlvQI {\n  display: block;\n  width: 100%;\n  padding: 0.25rem 0.5rem;\n  font-size: 0.875rem;\n  line-height: 1.5;\n  border-radius: 0.2rem;\n  color: #495057;\n  background-color: #fff;\n  background-clip: padding-box;\n  border: 1px solid #ced4da;\n  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;\n  overflow: visible;\n  margin: 0;\n  font-family: inherit;\n  box-sizing: border-box; }\n  .datepicker_sitcontrol__MlvQI:focus {\n    color: #495057;\n    background-color: #fff;\n    border-color: #80bdff;\n    outline: 0;\n    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }\n  .datepicker_sitcontrol__MlvQI:disabled, .datepicker_sitcontrol__MlvQI[readonly] {\n    background-color: #e9ecef;\n    opacity: 1; }\n  .datepicker_sitcontrol__MlvQI.datepicker_ralign__13aAk {\n    text-align: right; }\n\n.datepicker_datepicker__3yh6x {\n  display: block;\n  width: 100%;\n  background-color: #fff;\n  position: relative;\n  user-select: none; }\n  .datepicker_datepicker__3yh6x > .datepicker_sitcontrol__MlvQI {\n    padding-left: 1rem;\n    padding-right: 2.5rem;\n    text-align: center;\n    color: #787b7d; }\n  .datepicker_datepicker__3yh6x .datepicker_caret__2zRLa {\n    position: absolute;\n    top: 0.5rem;\n    color: #bbb;\n    padding: 0 0.2rem;\n    box-sizing: content-box; }\n    .datepicker_datepicker__3yh6x .datepicker_caret__2zRLa.datepicker_left__iAiHG {\n      left: 0.2rem; }\n    .datepicker_datepicker__3yh6x .datepicker_caret__2zRLa.datepicker_right__543yF {\n      right: 1.5rem; }\n  .datepicker_datepicker__3yh6x > .datepicker_calendar__ZFo0k {\n    position: absolute;\n    top: 0.5rem;\n    right: 0.3rem;\n    color: #787b7d; }\n  .datepicker_datepicker__3yh6x:hover .datepicker_caret__2zRLa {\n    color: #787b7d; }\n    .datepicker_datepicker__3yh6x:hover .datepicker_caret__2zRLa:hover {\n      color: #111; }\n  .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 {\n    position: absolute;\n    top: 30px;\n    z-index: 100;\n    background-color: rgba(255, 255, 255, 0.96);\n    border: 1px solid #ccc;\n    box-shadow: 0 1px 5px #ddd;\n    border-radius: 7px;\n    padding: 10px;\n    box-sizing: border-box; }\n    .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div {\n      font-size: 1rem;\n      position: relative;\n      text-align: center;\n      font-weight: bold; }\n      .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div .datepicker_angle__3SzdO {\n        font-style: normal;\n        text-align: center;\n        width: 1.4rem;\n        height: 1.4rem;\n        position: absolute;\n        top: 0;\n        cursor: pointer;\n        border-radius: 50%; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div .datepicker_angle__3SzdO:hover {\n          background-color: rgba(255, 227, 160, 0.59); }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div .datepicker_angle__3SzdO.datepicker_left__iAiHG {\n          left: 0; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5 > div .datepicker_angle__3SzdO.datepicker_right__543yF {\n          right: 0; }\n    .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul {\n      width: 182px;\n      font-size: 0;\n      padding: 5px 0 0 0;\n      box-sizing: border-box; }\n      .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li {\n        font-size: 0.9rem;\n        line-height: 0.9rem;\n        display: block;\n        border-radius: 7px;\n        width: 26px;\n        height: 1.15rem;\n        padding: 0.125rem 0.25rem;\n        float: left;\n        text-align: center;\n        box-sizing: border-box;\n        transition: background-color ease-in-out 300ms; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li:hover {\n          background-color: rgba(255, 227, 160, 0.59);\n          cursor: pointer; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li.datepicker_selected__S1Yg2 {\n          background-color: rgba(31, 42, 58, 0.73);\n          color: #fff; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li.datepicker_today__1RBsT {\n          border: 1px #1c5ec9 solid; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_byday__1eVAi > ul li.datepicker_header__3Nx4g {\n          font-size: 0.7rem;\n          padding: 0;\n          font-weight: bold;\n          height: 1rem;\n          background-color: transparent;\n          cursor: default; }\n    .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_bymonth__3D7BL > ul {\n      width: 180px;\n      font-size: 0;\n      padding: 5px 0 0 0;\n      box-sizing: border-box; }\n      .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_bymonth__3D7BL > ul li {\n        font-size: 1rem;\n        display: block;\n        border-radius: 7px;\n        width: 60px;\n        height: 35px;\n        padding: 5px;\n        float: left;\n        text-align: center;\n        box-sizing: border-box;\n        transition: background-color ease-in-out 300ms; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_bymonth__3D7BL > ul li:hover {\n          background-color: rgba(255, 227, 160, 0.59);\n          cursor: pointer; }\n        .datepicker_datepicker__3yh6x > .datepicker_picker__2yEN5.datepicker_bymonth__3D7BL > ul li.datepicker_selected__S1Yg2 {\n          background-color: rgba(31, 42, 58, 0.73);\n          color: #fff; }\n";
+var s$3 = { "sitcontrol": "datepicker_sitcontrol__MlvQI", "ralign": "datepicker_ralign__13aAk", "datepicker": "datepicker_datepicker__3yh6x", "caret": "datepicker_caret__2zRLa", "left": "datepicker_left__iAiHG", "right": "datepicker_right__543yF", "calendar": "datepicker_calendar__ZFo0k", "picker": "datepicker_picker__2yEN5", "angle": "datepicker_angle__3SzdO", "byday": "datepicker_byday__1eVAi", "selected": "datepicker_selected__S1Yg2", "today": "datepicker_today__1RBsT", "header": "datepicker_header__3Nx4g", "bymonth": "datepicker_bymonth__3D7BL" };
 styleInject(css$5);
 
 var DatePicker = function (_React$Component) {
@@ -2318,7 +2462,7 @@ Select.propTypes = {
   style: PropTypes.object
 };
 
-var counter$2 = 0;
+var counter$4 = 0;
 function SelectBox(props) {
   var id = props.id,
       label = props.label,
@@ -2327,7 +2471,7 @@ function SelectBox(props) {
       ref = props.ref,
       sprops = objectWithoutProperties$1(props, ["id", "label", "loading", "className", "ref"]);
 
-  id = id || "sitselectbox" + ++counter$2;
+  id = id || "sitselectbox" + ++counter$4;
   return React.createElement(
     "div",
     { className: classnames(s$2.sitbox, className) },
@@ -2356,7 +2500,7 @@ var css$6 = ".checkbox_sitcheck__ZLw9D {\n  position: relative; }\n  .checkbox_s
 var s$4 = { "sitcheck": "checkbox_sitcheck__ZLw9D", "siticon": "checkbox_siticon__m28wS", "disabled": "checkbox_disabled__-qPIA" };
 styleInject(css$6);
 
-var counter$3 = 0;
+var counter$5 = 0;
 
 var CheckBox = function (_React$Component) {
   inherits(CheckBox, _React$Component);
@@ -2377,7 +2521,7 @@ var CheckBox = function (_React$Component) {
     };
 
     _this.state = { checked: props.defaultChecked };
-    _this.id = props.id || "sitcheckbox" + ++counter$3;
+    _this.id = props.id || "sitcheckbox" + ++counter$5;
     return _this;
   }
 
@@ -2449,5 +2593,5 @@ var faCircle$1 = { prefix: 'far', iconName: 'circle', icon: [512, 512, [], "f111
 
 library.add(faSpinner, faCaretLeft, faCaretRight, faAngleLeft, faAngleRight, faCalendarAlt, faCircle$1, faCheckCircle);
 
-export { Button, Input, InputBox, InputOption, DatePicker, Select, SelectBox, CheckBox };
+export { Button, Input, InputBox, NumberInput, NumberInputBox, InputOption, DatePicker, Select, SelectBox, CheckBox };
 //# sourceMappingURL=index.module.js.map
