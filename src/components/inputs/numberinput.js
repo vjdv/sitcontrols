@@ -8,7 +8,13 @@ export default class NumberInput extends React.Component {
   constructor(props) {
     super(props);
     var value = props.defaultValue;
-    if (typeof value !== "number") value = Number(value);
+    if (typeof value !== "number") {
+      value = Number(value);
+      if (isNaN(value)) {
+        console.warn("NotaNumber: %s", value);
+        value = 0;
+      }
+    }
     this.state = { value };
     this.id = `sitnuminp${++counter}`;
   }
@@ -55,7 +61,10 @@ export default class NumberInput extends React.Component {
     var { id, value, defaultValue, onChange, accept, ...xprops } = this.props;
     if (value !== undefined) {
       if (typeof value !== "number") value = Number(value);
-      if (isNaN(value)) value = 0;
+      if (isNaN(value)) {
+        console.warn("NotaNumber: %s", value);
+        value = 0;
+      }
       this.state.value = value;
     }
     return (
@@ -83,5 +92,8 @@ NumberInput.defaultProps = {
 NumberInput.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  prefix: PropTypes.string,
+  suffix: PropTypes.string,
+  decimals: PropTypes.number,
   onChange: PropTypes.func
 };
