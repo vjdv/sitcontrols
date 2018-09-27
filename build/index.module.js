@@ -1662,8 +1662,8 @@ function InputBox(props) {
   var id = props.id,
       label = props.label,
       loading = props.loading,
-      ref = props.ref,
-      iprops = objectWithoutProperties$1(props, ["id", "label", "loading", "ref"]);
+      xref = props.xref,
+      iprops = objectWithoutProperties$1(props, ["id", "label", "loading", "xref"]);
 
   id = id || "sitcontrolbox" + ++counter$1;
   return React.createElement(
@@ -1676,7 +1676,7 @@ function InputBox(props) {
       loading && " ",
       label
     ),
-    React.createElement(Input, _extends$2({ ref: ref, id: id || this.id }, iprops))
+    React.createElement(Input, _extends$2({ ref: xref, id: id || this.id }, iprops))
   );
 }
 
@@ -1725,7 +1725,13 @@ var NumberInput = function (_React$Component) {
     };
 
     var value = props.defaultValue;
-    if (typeof value !== "number") value = Number(value);
+    if (typeof value !== "number") {
+      value = Number(value);
+      if (isNaN(value)) {
+        console.warn("NotaNumber: %s", value);
+        value = 0;
+      }
+    }
     _this.state = { value: value };
     _this.id = "sitnuminp" + ++counter$2;
     return _this;
@@ -1755,7 +1761,10 @@ var NumberInput = function (_React$Component) {
 
       if (value !== undefined) {
         if (typeof value !== "number") value = Number(value);
-        if (isNaN(value)) value = 0;
+        if (isNaN(value)) {
+          console.warn("NotaNumber: %s", value);
+          value = 0;
+        }
         this.state.value = value;
       }
       return React.createElement("input", _extends$2({
@@ -1798,6 +1807,9 @@ NumberInput.defaultProps = {
 NumberInput.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   defaultValue: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  prefix: PropTypes.string,
+  suffix: PropTypes.string,
+  decimals: PropTypes.number,
   onChange: PropTypes.func
 };
 
@@ -2468,8 +2480,8 @@ function SelectBox(props) {
       label = props.label,
       loading = props.loading,
       className = props.className,
-      ref = props.ref,
-      sprops = objectWithoutProperties$1(props, ["id", "label", "loading", "className", "ref"]);
+      xref = props.xref,
+      sprops = objectWithoutProperties$1(props, ["id", "label", "loading", "className", "xref"]);
 
   id = id || "sitselectbox" + ++counter$4;
   return React.createElement(
@@ -2482,7 +2494,7 @@ function SelectBox(props) {
       loading && " ",
       label
     ),
-    React.createElement(Select, _extends$2({ ref: ref, id: id }, sprops))
+    React.createElement(Select, _extends$2({ ref: xref, id: id }, sprops))
   );
 }
 

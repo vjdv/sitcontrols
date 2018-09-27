@@ -7,7 +7,7 @@ import s from "./inputbox.scss";
 
 var counter = 0;
 function InputBox(props) {
-  var { id, label, loading, ref, ...iprops } = props;
+  var { id, label, loading, xref, ...iprops } = props;
   id = id || `sitcontrolbox${++counter}`;
   return (
     <div className={cx(s.sitbox)}>
@@ -16,7 +16,7 @@ function InputBox(props) {
         {loading && " "}
         {label}
       </label>
-      <Input ref={ref} id={id || this.id} {...iprops} />
+      <Input ref={xref} id={id || this.id} {...iprops} />
     </div>
   );
 }

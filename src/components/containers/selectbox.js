@@ -7,7 +7,7 @@ import s from "./inputbox.scss";
 
 var counter = 0;
 function SelectBox(props) {
-  var { id, label, loading, className, ref, ...sprops } = props;
+  var { id, label, loading, className, xref, ...sprops } = props;
   id = id || `sitselectbox${++counter}`;
   return (
     <div className={cx(s.sitbox, className)}>
@@ -16,7 +16,7 @@ function SelectBox(props) {
         {loading && " "}
         {label}
       </label>
-      <Select ref={ref} id={id} {...sprops} />
+      <Select ref={xref} id={id} {...sprops} />
     </div>
   );
 }
