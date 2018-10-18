@@ -24,7 +24,7 @@ export default class DatePicker extends React.Component {
     this.state = {
       year: props.defaultYear || this.today.getFullYear(),
       month: props.defaultMonth || this.today.getMonth() + 1,
-      day: props.defaultDay || this.today.getDay() + 1,
+      day: props.defaultDay || this.today.getDate(),
       show: false,
       selectionYear: 0,
       selectionMonth: 0,
@@ -36,6 +36,7 @@ export default class DatePicker extends React.Component {
       this.state.day = Number(props.defaultValue.substring(8, 10));
     }
     if (props.onChange) this.onChange = props.onChange;
+    this.oldValue = this.value;
   }
   render() {
     var style = { width: this.props.width };
@@ -134,6 +135,7 @@ export default class DatePicker extends React.Component {
     var y = date.substring(0, 4);
     var m = date.substring(5, 7);
     var d = date.substring(8, 10);
+    this.oldValue = y + "-" + m + "-" + d;
     this.setState({ year: Number(y), month: Number(m), day: Number(d) });
   }
   setInput = o => (this.input = o);

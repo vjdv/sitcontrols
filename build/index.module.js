@@ -2126,7 +2126,7 @@ var DatePicker = function (_React$Component) {
     _this.state = {
       year: props.defaultYear || _this.today.getFullYear(),
       month: props.defaultMonth || _this.today.getMonth() + 1,
-      day: props.defaultDay || _this.today.getDay() + 1,
+      day: props.defaultDay || _this.today.getDate(),
       show: false,
       selectionYear: 0,
       selectionMonth: 0,
@@ -2138,6 +2138,7 @@ var DatePicker = function (_React$Component) {
       _this.state.day = Number(props.defaultValue.substring(8, 10));
     }
     if (props.onChange) _this.onChange = props.onChange;
+    _this.oldValue = _this.value;
     return _this;
   }
 
@@ -2333,6 +2334,7 @@ var DatePicker = function (_React$Component) {
       var y = date.substring(0, 4);
       var m = date.substring(5, 7);
       var d = date.substring(8, 10);
+      this.oldValue = y + "-" + m + "-" + d;
       this.setState({ year: Number(y), month: Number(m), day: Number(d) });
     }
   }]);
@@ -2585,6 +2587,69 @@ CheckBox.propTypes = {
   readOnly: PropTypes.bool
 };
 
+var css$7 = ".tag_sittag__2NblI {\n  display: inline-block;\n  padding: 0.25rem 0.4rem;\n  font-weight: 700;\n  line-height: 1;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: baseline;\n  border-radius: 0.25rem;\n  color: #fff;\n  list-style: none; }\n  .tag_sittag__2NblI.tag_primary__23MR0 {\n    background-color: #007bff;\n    color: #fff; }\n    .tag_sittag__2NblI.tag_primary__23MR0 .tag_close__t3J95 {\n      color: #003166; }\n      .tag_sittag__2NblI.tag_primary__23MR0 .tag_close__t3J95:hover {\n        color: #e6e6e6; }\n";
+var s$5 = { "sittag": "tag_sittag__2NblI", "primary": "tag_primary__23MR0", "close": "tag_close__t3J95" };
+styleInject(css$7);
+
+var variants$1 = { primary: s$5.primary, secondary: s$5.secondary, success: s$5.success, danger: s$5.danger, warning: s$5.warning, info: s$5.info, light: s$5.light, dark: s$5.dark, link: s$5.link };
+
+var Tag = function (_React$Component) {
+  inherits(Tag, _React$Component);
+
+  function Tag() {
+    classCallCheck$1(this, Tag);
+    return possibleConstructorReturn(this, (Tag.__proto__ || Object.getPrototypeOf(Tag)).apply(this, arguments));
+  }
+
+  createClass$1(Tag, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "span",
+        { className: classnames(s$5.sittag, variants$1[this.props.variant]) },
+        this.props.onClose !== undefined && React.createElement(FontAwesomeIcon, { className: s$5.close, icon: "times-circle" }),
+        this.props.label
+      );
+    }
+  }]);
+  return Tag;
+}(React.Component);
+
+Tag.defaultProps = {
+  variant: "primary"
+};
+
+//import s from "./inputbox.scss";
+
+var TagBox = function (_React$Component) {
+  inherits(TagBox, _React$Component);
+
+  function TagBox() {
+    classCallCheck$1(this, TagBox);
+    return possibleConstructorReturn(this, (TagBox.__proto__ || Object.getPrototypeOf(TagBox)).apply(this, arguments));
+  }
+
+  createClass$1(TagBox, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "div",
+        null,
+        React.Children.map(this.props.children, function (child) {
+          console.log(child);
+          console.log(child.props);
+          return React.createElement(
+            "span",
+            null,
+            "Ok"
+          );
+        })
+      );
+    }
+  }]);
+  return TagBox;
+}(React.Component);
+
 /*!
  * Font Awesome Free 5.2.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
@@ -2596,6 +2661,7 @@ var faCaretLeft = { prefix: 'fas', iconName: 'caret-left', icon: [192, 512, [], 
 var faCaretRight = { prefix: 'fas', iconName: 'caret-right', icon: [192, 512, [], "f0da", "M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z"] };
 var faCheckCircle = { prefix: 'fas', iconName: 'check-circle', icon: [512, 512, [], "f058", "M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z"] };
 var faSpinner = { prefix: 'fas', iconName: 'spinner', icon: [512, 512, [], "f110", "M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z"] };
+var faTimesCircle = { prefix: 'fas', iconName: 'times-circle', icon: [512, 512, [], "f057", "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm121.6 313.1c4.7 4.7 4.7 12.3 0 17L338 377.6c-4.7 4.7-12.3 4.7-17 0L256 312l-65.1 65.6c-4.7 4.7-12.3 4.7-17 0L134.4 338c-4.7-4.7-4.7-12.3 0-17l65.6-65-65.6-65.1c-4.7-4.7-4.7-12.3 0-17l39.6-39.6c4.7-4.7 12.3-4.7 17 0l65 65.7 65.1-65.6c4.7-4.7 12.3-4.7 17 0l39.6 39.6c4.7 4.7 4.7 12.3 0 17L312 256l65.6 65.1z"] };
 
 /*!
  * Font Awesome Free 5.3.1 by @fontawesome - https://fontawesome.com
@@ -2603,7 +2669,7 @@ var faSpinner = { prefix: 'fas', iconName: 'spinner', icon: [512, 512, [], "f110
  */
 var faCircle$1 = { prefix: 'far', iconName: 'circle', icon: [512, 512, [], "f111", "M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200z"] };
 
-library.add(faSpinner, faCaretLeft, faCaretRight, faAngleLeft, faAngleRight, faCalendarAlt, faCircle$1, faCheckCircle);
+library.add(faSpinner, faCaretLeft, faCaretRight, faAngleLeft, faAngleRight, faCalendarAlt, faCircle$1, faCheckCircle, faTimesCircle);
 
-export { Button, Input, InputBox, NumberInput, NumberInputBox, InputOption, DatePicker, Select, SelectBox, CheckBox };
+export { Button, Input, InputBox, NumberInput, NumberInputBox, InputOption, DatePicker, Select, SelectBox, CheckBox, Tag, TagBox };
 //# sourceMappingURL=index.module.js.map
