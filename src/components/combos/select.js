@@ -45,8 +45,9 @@ class Select extends React.Component {
     this.options = options;
     this.onChange = onChange;
     id = id || this.id;
+    value = this.props.value === undefined ? this.state.value : this.props.value;
     return (
-      <select ref={s => (this.select = s)} id={id} className={className || s.sitcontrol} value={this.state.value} readOnly={readOnly} style={style} onChange={this.changeHandler} {...newprops}>
+      <select ref={s => (this.select = s)} id={id} className={className || s.sitcontrol} value={value} readOnly={readOnly} style={style} onChange={this.changeHandler} {...newprops}>
         {options.map((o, i) => {
           var val = this.valueFunc(o, i);
           return (
