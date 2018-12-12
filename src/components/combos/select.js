@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import s from "./../inputs/input.scss";
+import cx from "classnames";
 
 var select_counter = 0;
 
@@ -47,7 +48,7 @@ class Select extends React.Component {
     id = id || this.id;
     value = this.props.value === undefined ? this.state.value : this.props.value;
     return (
-      <select ref={s => (this.select = s)} id={id} className={className || s.sitcontrol} value={value} readOnly={readOnly} style={style} onChange={this.changeHandler} {...newprops}>
+      <select ref={s => (this.select = s)} id={id} className={cx(s.sitcontrol, className)} value={value} readOnly={readOnly} style={style} onChange={this.changeHandler} {...newprops}>
         {options.map((o, i) => {
           var val = this.valueFunc(o, i);
           return (
