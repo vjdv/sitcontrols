@@ -6,6 +6,7 @@
 
 PropTypes = PropTypes && PropTypes.hasOwnProperty('default') ? PropTypes['default'] : PropTypes;
 var React__default = React['default'];
+var ReactDOM__default = ReactDOM['default'];
 
 /*!
  * Font Awesome Free 5.5.0 by @fontawesome - https://fontawesome.com
@@ -1719,10 +1720,15 @@ var NumberInput = function (_React$Component) {
     };
 
     _this.changeHandler = function (e) {
+      var oldValue = _this.state.value;
       var val1 = e.target.value;
-      var val2 = val1.replace(/[^0-9.]/g, "");
-      if (val1.charAt(0) === "-") val2 = "-" + val2;
-      _this.setState({ text: _this.parseString(val2) });
+      var newValue = val1.replace(/[^0-9.]/g, "");
+      if (val1.charAt(0) === "-") newValue = "-" + newValue;
+      _this.setState({ value: Number(newValue), text: _this.parseString(newValue) }, function () {
+        if (_this.props.onChange !== undefined && oldValue !== newValue) {
+          _this.props.onChange({ target: _this, oldValue: oldValue, newValue: newValue });
+        }
+      });
     };
 
     _this.focused = function () {
@@ -13713,11 +13719,12 @@ var Select = function (_React$Component) {
       this.options = options;
       this.onChange = onChange;
       id = id || this.id;
+      value = this.props.value === undefined ? this.state.value : this.props.value;
       return React__default.createElement(
         "select",
         _extends$2({ ref: function ref(s) {
             return _this2.select = s;
-          }, id: id, className: className || s$1.sitcontrol, value: this.state.value, readOnly: readOnly, style: style, onChange: this.changeHandler }, newprops),
+          }, id: id, className: classnames(s$1.sitcontrol, className), value: value, readOnly: readOnly, style: style, onChange: this.changeHandler }, newprops),
         options.map(function (o, i) {
           var val = _this2.valueFunc(o, i);
           return React__default.createElement(
@@ -13886,6 +13893,48 @@ CheckBox.propTypes = {
   readOnly: PropTypes.bool
 };
 
+var css$7 = ".modal_modal__2Tzpm {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  max-width: 100vw;\n  max-height: 100vh;\n  background-color: rgba(255, 255, 255, 0.75);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  transition: background-color 400ms;\n  z-index: 200;\n  box-sizing: border-box; }\n  .modal_modal__2Tzpm .modal_box__2fTc3 {\n    display: flex;\n    flex-direction: column;\n    border-radius: 7px;\n    width: 250px;\n    height: auto;\n    min-width: 200px;\n    min-height: 120px;\n    padding: 3px;\n    margin-top: -50px;\n    transition: margin-top 400ms;\n    box-sizing: border-box;\n    background-color: #365368; }\n    .modal_modal__2Tzpm .modal_box__2fTc3 .modal_header__2epkK {\n      border-radius: 7px 7px 0 0;\n      width: 100%;\n      color: #fff;\n      font-weight: bold;\n      padding: 3px 5px;\n      box-sizing: border-box;\n      background: #1c2b36;\n      background: -moz-linear-gradient(top, #1c2b36 0, #253847 100%);\n      background: -webkit-linear-gradient(top, #1c2b36, #253847);\n      background: linear-gradient(180deg, #1c2b36 0, #253847); }\n    .modal_modal__2Tzpm .modal_box__2fTc3 .modal_content__2Voq8 {\n      background-color: #fff;\n      width: 100%;\n      color: #111;\n      padding: 5px 8px;\n      flex: 1;\n      text-align: center;\n      box-sizing: border-box; }\n    .modal_modal__2Tzpm .modal_box__2fTc3 .modal_footer__rFuWZ {\n      background-color: #fff;\n      border-radius: 0 0 7px 7px;\n      width: 100%;\n      color: #111;\n      padding: 5px 0;\n      text-align: center;\n      box-sizing: border-box; }\n";
+var s$5 = { "modal": "modal_modal__2Tzpm", "box": "modal_box__2fTc3", "header": "modal_header__2epkK", "content": "modal_content__2Voq8", "footer": "modal_footer__rFuWZ" };
+styleInject(css$7);
+
+var modalRoot = document.getElementById("modal-root");
+
+function Modal(props) {
+  var show = props.show === undefined || props.show === true;
+  var content = props.content;
+  var buttons = props.buttons;
+  React__default.Children.map(props.children, function (child) {
+    if (child.type === ModalContent) content = child;else if (child.type === ModalButtons) buttons = child;
+  });
+  var modal = React__default.createElement(
+    "div",
+    { className: s$5.modal, style: { display: show ? "flex" : "none" } },
+    React__default.createElement(
+      "div",
+      { className: s$5.box, style: { width: props.width || "auto", height: props.height || "auto" } },
+      React__default.createElement(
+        "div",
+        { className: s$5.header },
+        props.title || "Modal"
+      ),
+      React__default.createElement(
+        "div",
+        { className: s$5.content },
+        content.props.children
+      ),
+      React__default.createElement(
+        "div",
+        { className: s$5.footer },
+        buttons.props.children
+      )
+    )
+  );
+  if (modalRoot === null) return modal;else return ReactDOM__default.createPortal(modal, modalRoot);
+}
+
+function ModalContent() {}
+function ModalButtons() {}
+
 /*!
  * Font Awesome Free 5.5.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
@@ -13916,6 +13965,9 @@ exports.DatePicker = DatePicker;
 exports.Select = Select;
 exports.SelectBox = SelectBox;
 exports.CheckBox = CheckBox;
+exports.Modal = Modal;
+exports.ModalContent = ModalContent;
+exports.ModalButtons = ModalButtons;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
