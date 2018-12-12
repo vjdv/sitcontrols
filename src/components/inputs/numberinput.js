@@ -42,10 +42,15 @@ export default class NumberInput extends React.Component {
     }
   }
   changeHandler = e => {
+    const oldValue = this.state.value;
     const val1 = e.target.value;
-    var val2 = val1.replace(/[^0-9.]/g, "");
-    if (val1.charAt(0) === "-") val2 = "-" + val2;
-    this.setState({ text: this.parseString(val2) });
+    var newValue = val1.replace(/[^0-9.]/g, "");
+    if (val1.charAt(0) === "-") newValue = "-" + newValue;
+    this.setState({ value: Number(newValue), text: this.parseString(newValue) }, () => {
+      if (this.props.onChange !== undefined && oldValue !== newValue) {
+        this.props.onChange({ target: this, oldValue, newValue });
+      }
+    });
   };
   focused = () => {
     const decimals = this.state.value % 1 === 0 ? 0 : this.props.decimals;
