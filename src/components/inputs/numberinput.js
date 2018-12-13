@@ -52,18 +52,25 @@ export default class NumberInput extends React.Component {
       }
     });
   };
-  focused = () => {
+  focused = e => {
+    e.persist();
     const decimals = this.state.value % 1 === 0 ? 0 : this.props.decimals;
-    this.setState({ focused: true, text: this.formatNumber(this.state.value, decimals) });
+    this.setState({ focused: true, text: this.formatNumber(this.state.value, decimals) }, () => {
+      this.input.select();
+      if (this.props.onFocus) this.props.onFocus({ target: this, event: e });
+    });
   };
-  blurred = () => {
+  blurred = e => {
+    e.persist();
     var text = this.state.text;
     text = text.replace(/[^0-9.]/g, "");
     if (this.state.text.charAt(0) === "-") text = "-" + text;
-    this.setState({ focused: false, value: Number(text) });
+    this.setState({ focused: false, value: Number(text) }, () => {
+      if (this.props.onBlur) this.props.onBlur({ target: this, event: e });
+    });
   };
   render() {
-    var { id, value, defaultValue, onChange, accept, ...xprops } = this.props;
+    var { id, value, defaultValue, onChange, onFocus, onBlur, accept, ...xprops } = this.props;
     if (value !== undefined) {
       if (typeof value !== "number") value = Number(value);
       if (isNaN(value)) {
