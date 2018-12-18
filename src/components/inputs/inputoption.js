@@ -3,20 +3,19 @@ import cx from "classnames";
 import s1 from "./input.scss";
 import s2 from "./inputoption.scss";
 import { List } from "react-virtualized";
+import PropTypes from "prop-types";
 
-export default class InputOption extends React.Component {
+class InputOption extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      value: props.defaultValue,
       focused: false,
       showList: false,
       text: "",
       filteredOptions: [],
       pickedIndex: 1
     };
-    this.labelField = props.labelField || "label";
-    this.valueField = props.valueField || "value";
-    this.onChange = props.onChange;
   }
   render() {
     const parentStyle = { width: this.props.width, ...this.props.style };
@@ -104,9 +103,9 @@ export default class InputOption extends React.Component {
   };
   filterOptions = () => {
     const item = this.selectedItem;
-    const showAll = this.state.text === "" || this.state.text === item[this.props.labelField];
+    const showAll = this.state.text === "" || (item !== null && this.state.text === item[this.props.labelField]);
     const textLowered = this.state.text.toLowerCase();
-    const filteredOptions = this.props.options.filter(o => showAll || o[this.labelField].toLowerCase().indexOf(textLowered) !== -1);
+    const filteredOptions = this.props.options.filter(o => showAll || o[this.props.labelField].toLowerCase().indexOf(textLowered) !== -1);
     this.setState({ filteredOptions });
   };
   hideOptions = () => setTimeout(() => this.setState({ showList: false }), 200);
@@ -149,8 +148,26 @@ export default class InputOption extends React.Component {
     const selected = this.state.value === o[this.props.valueField];
     return (
       <div className={cx(s2.item, picked && s2.picked, selected && s2.selected)} data-index={index} key={key} style={style} onClick={this.clickHandler}>
-        {o[this.labelField]}
+        {o[this.props.labelField]}
       </div>
     );
   };
 }
+
+InputOption.defaultProps = {
+  defaultValue: "",
+  labelField: "label",
+  valueField: "value",
+  readOnly: false,
+  options: []
+};
+InputOption.propTypes = {
+  value: PropTypes.string,
+  defaultValue: PropTypes.string,
+  labelField: PropTypes.string,
+  valueField: PropTypes.string,
+  readOnly: PropTypes.bool,
+  onChange: PropTypes.func
+};
+
+export default InputOption;
