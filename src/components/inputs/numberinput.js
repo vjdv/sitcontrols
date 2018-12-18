@@ -69,8 +69,18 @@ export default class NumberInput extends React.Component {
       if (this.props.onBlur) this.props.onBlur({ target: this, event: e });
     });
   };
+  keyUpHandler = e => {
+    e.persist();
+    if (this.props.onEnter && e.keyCode === 13) {
+      e.preventDefault();
+      this.props.onEnter({ target: this });
+    }
+    if (this.props.onKeyUp) {
+      this.props.onKeyUp(e);
+    }
+  };
   render() {
-    var { id, value, defaultValue, onChange, onFocus, onBlur, accept, ...xprops } = this.props;
+    var { id, value, defaultValue, onChange, onFocus, onBlur, onKeyUp, onEnter, ...xprops } = this.props;
     if (value !== undefined) {
       if (typeof value !== "number") value = Number(value);
       if (isNaN(value)) {
@@ -88,6 +98,7 @@ export default class NumberInput extends React.Component {
         onChange={this.changeHandler}
         onFocus={this.focused}
         onBlur={this.blurred}
+        onKeyUp={this.keyUpHandler}
         {...xprops}
       />
     );
