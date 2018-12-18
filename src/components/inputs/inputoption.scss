@@ -23,6 +23,7 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+      box-sizing: border-box;
       &.picked,
       &:hover {
         background-color: rgba(0, 0, 255, 0.15);
@@ -32,4 +33,7 @@
       }
     }
   }
+}
+.nochoiced {
+  color: #888;
 }
