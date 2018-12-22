@@ -24,6 +24,7 @@ export default class Input extends React.Component {
       var re = new RegExp("^" + this.props.accept + "$");
       val = re.test(val) ? val : this.state.value;
     }
+    e.newValue = val;
     if (val !== this.state.value) this.onChange(e, val);
     this.value = val;
   };
