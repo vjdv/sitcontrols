@@ -14,11 +14,14 @@ class InputOption extends React.Component {
       showList: false,
       text: "",
       filteredOptions: [],
-      pickedIndex: 1
+      pickedIndex: 1,
+      options: null,
+      selectedIndex: -1
     };
   }
   render() {
     const parentStyle = { width: this.props.width, ...this.props.style };
+    const placeholder = this.state.selectedIndex === -1 ? this.state.value : this.props.placeholder;
     return (
       <div className={s2.inputoption} style={parentStyle}>
         <input
@@ -30,6 +33,7 @@ class InputOption extends React.Component {
           onKeyDown={this.keyHandler}
           onFocus={this.focusHandler}
           onBlur={this.blurHandler}
+          placeholder={placeholder}
         />
         {this.props.name !== undefined && <input type="hidden" name={this.props.name} value={this.value} />}
         {this.state.showList && (
@@ -62,32 +66,40 @@ class InputOption extends React.Component {
   }
   get text() {
     const item = this.selectedItem;
-    return this.state.focused ? this.state.text : item === null ? "" : item[this.props.labelField];
+    return this.state.focused ? this.state.text : item === null ? "" : item[this.props.labelField] || this.state.value;
   }
   get selectedItem() {
-    const index = this.selectedIndex;
-    return index === -1 ? null : this.props.options[index];
+    return this.state.selectedIndex === -1 ? null : this.props.options[this.state.selectedIndex];
   }
   get selectedIndex() {
-    for (var i = 0; i < this.props.options.length; i++) {
-      if (this.props.options[i][this.props.valueField] === this.state.value) return i;
-    }
-    return -1;
+    return this.state.selectedIndex;
   }
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props, prevstate) {
     const newstate = {};
-    if (props.value !== undefined) {
-      var item = null;
+    if (props.value !== undefined && (props.value !== prevstate.value || props.options !== prevstate.options)) {
+      var index = -1;
       for (var i = 0; i < props.options.length; i++) {
         if (props.options[i][props.valueField] === props.value) {
-          item = props.options[i];
+          index = i;
           break;
         }
       }
-      state.value = item === null ? "" : props.value;
+      newstate.value = props.value;
+      newstate.selectedIndex = index;
     }
+    newstate.options = props.options || [];
     return newstate;
   }
+  getItemByValue = value => {
+    var item = null;
+    for (var i = 0; i < this.props.options.length; i++) {
+      if (this.props.options[i][this.props.valueField] === value) {
+        item = this.props.options[i];
+        break;
+      }
+    }
+    return item;
+  };
   changeHandler = e => {
     const text = e.target.value;
     this.setState({ text, showList: true, pickedIndex: 0 }, this.filterOptions);
@@ -159,7 +171,8 @@ InputOption.defaultProps = {
   labelField: "label",
   valueField: "value",
   readOnly: false,
-  options: []
+  options: [],
+  placeholder: ""
 };
 InputOption.propTypes = {
   value: PropTypes.string,
